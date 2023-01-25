@@ -1,4 +1,4 @@
-import System;
+﻿import System;
 import System.Windows.Forms;
 import Fiddler;
 
@@ -84,11 +84,6 @@ class Handlers
     public static RulesOption("Request &Japanese Content")
     var m_Japanese: boolean = false;
 
-    // Automatic Authentication
-    public static RulesOption("&Automatically Authenticate")
-    BindPref("fiddlerscript.rules.AutoAuth")
-    var m_AutoAuth: boolean = false;
-
     // Cause Fiddler Classic to override the User-Agent header with one of the defined values
     // The page http://browserscope2.org/browse?category=selectors&ua=Mobile%20Safari is a good place to find updated versions of these
     RulesString("&User-Agents", true) 
@@ -159,7 +154,16 @@ class Handlers
 		// if (oSession.uriContains("/sandbox/")) {
 		//     oSession.oFlags["x-breakrequest"] = "yup";	// Existence of the x-breakrequest flag creates a breakpoint; the "yup" value is unimportant.
 		// }
-
+		/*
+		if (oSession.host == "umwatson.events.data.microsoft.com" 
+			// && (oSession.oRequest.headers.HTTPMethod == "GET")
+		) {
+			oSession["ui-backcolor"] = "green";   // Simplify debugging
+			oSession.oRequest.headers.HTTPMethod = "POST";
+			//oSession.oRequest["Content-Type"] = "application/x-www-form/urlencoded";
+			oSession.utilSetRequestBody("");
+		}
+		*/
 		if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
 			oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith); 
 		}
@@ -183,17 +187,21 @@ class Handlers
 			} else if (oSession.HostnameIs("www.neopets.com")) {
 				saved_cookies = oSession.oRequest.headers["Cookie"];
 			}
+            // Fix potato counter because it doesn't use images. for some reason
+            if (oSession.uriContains("games/g226/config.xml")) {
+                oSession.host = "images.neopets.com";
+            }
 			//fixes games pointing to dev server that have chinese lang when offline	
 			if (oSession.uriContains("gettranslationxml.phtml") && oSession.HTTPMethodIs("POST")) {
 				oSession.utilSetRequestBody(oSession.GetRequestBodyAsString().Replace("lang=ch", "lang=en"));	
 			}
-			
 			//fixes extra
 			if (oSession.uriContains(".swf") || oSession.uriContains(".txt") || oSession.oRequest.headers.Exists("x-flash-version")) {
 				var path = "neopets" + oSession.PathAndQuery
 				if (oSession.oRequest.headers.Exists("x-flash-version")) {
 					path = path.Split("?")[0];
 				}
+				// Note: 3dvia installer/player javascript is mirrored in case it ever goes down
 				if (System.IO.File.Exists(path)) {
 					oSession.utilCreateResponseAndBypassServer();
 					oSession.ResponseBody = System.IO.File.ReadAllBytes(path);
@@ -215,9 +223,9 @@ class Handlers
 
 		if (m_SimulateModem) {
 			// Delay sends by 300ms per KB uploaded.
-			oSession["request-trickle-delay"] = "300"; 
+			oSession["request-trickle-delay"] = "150"; 
 			// Delay receives by 150ms per KB downloaded.
-			oSession["response-trickle-delay"] = "150"; 
+			oSession["response-trickle-delay"] = "50"; 
 		}
 
 		if (m_DisableCaching) {
@@ -233,16 +241,6 @@ class Handlers
 
 		if (m_Japanese) {
 			oSession.oRequest["Accept-Language"] = "ja";
-		}
-
-		if (m_AutoAuth) {
-			// Automatically respond to any authentication challenges using the 
-			// current Fiddler Classic user's credentials. You can change (default)
-			// to a domain\\username:password string if preferred.
-			//
-			// WARNING: This setting poses a security risk if remote 
-			// connections are permitted!
-			oSession["X-AutoAuth"] = "(default)";
 		}
 
 		if (m_AlwaysFresh && (oSession.oRequest.headers.Exists("If-Modified-Since") || oSession.oRequest.headers.Exists("If-None-Match")))
@@ -309,6 +307,10 @@ class Handlers
             oSession["x-breakresponse"]="uri";
             oSession.bBufferResponse = true;
         }
+		// Fix access control origin
+		if (oSession.oResponse.headers['Access-Control-Allow-Origin'].Contains("neopets.com")) {
+			oSession.oResponse.headers['Access-Control-Allow-Origin'] = "*";
+		}
     }
 
     static function OnBeforeResponse(oSession: Session) {
@@ -536,3 +538,12 @@ class Handlers
         }
     }
 }
+
+
+
+
+
+
+
+
+
