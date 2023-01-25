@@ -30,12 +30,12 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 8. Close Fiddler.
 9. Start Fiddler whenever you want to play Neopets games :)
 
-**Notes:**  
-#4. To install this certificate into Pale Moon, simply click "Pale Moon" at the top left (menu bar), and click Preferences. Then go to the "Advanced" tab, and then choose the "Certificates" sub-tab. Click "View Certificates" then click "Import" and locate the exported certificate on your desktop. It is named "FiddlerRoot.cer"
-
-#5. You can remove this certificate later via Windows Certificate Manager (certmgr.msc->Trusted Root Certification Authorities->Certificates). The name of the certificate is DO_NOT_TRUST so that you're well aware it's a local certificate, and not from a trusted Certificate Authority (CA). It is safe to trust this certificate, BUT the implications are that you will not see any genuine certificate errors from websites, so you should keep Fiddler closed when you're not using it, and you should remove the certificate if you stop playing Neopets games.
-
-Fiddler seems to need "Capture Traffic" enabled in order to work consistently (feel free to experiment). This means it logs every packet that is proxied throuogh it. So while you can watch Youtube on Chrome while running Fiddler, you should clear out the history/restart Fiddler once in a while, otherwise it will start using up all your memory holding a copy of every video packet!
+> **Notes:**  
+> #4. To install this certificate into Pale Moon, simply click "Pale Moon" at the top left (menu bar), and click Preferences. Then go to the "Advanced" tab, and then choose the "Certificates" sub-tab. Click "View Certificates" then click "Import" and locate the exported certificate on your desktop. It is named "FiddlerRoot.cer"
+> 
+> #5. You can remove this certificate later via Windows Certificate Manager (certmgr.msc->Trusted Root Certification Authorities->Certificates). The name of the certificate is DO_NOT_TRUST so that you're well aware it's a local certificate, and not from a trusted Certificate Authority (CA). It is safe to trust this certificate, BUT the implications are that you will not see any genuine certificate errors from websites, so you should keep Fiddler closed when you're not using it, and you should remove the certificate if you stop playing Neopets games.
+> 
+> Fiddler seems to need "Capture Traffic" enabled in order to work consistently (feel free to experiment). This means it logs every packet that is proxied throuogh it. So while you can watch Youtube on Chrome while running Fiddler, you should clear out the history/restart Fiddler once in a while, otherwise it will start using up all your memory holding a copy of every video packet!
 
 
 ### Flash Games: (64-bit Pale Moon)
@@ -52,12 +52,12 @@ Fiddler seems to need "Capture Traffic" enabled in order to work consistently (f
 3. This should automatically launch the installer the first time
 4. Enjoy!
 
-**Notes:**  
-*Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
-
-You can install both 64-bit and 32-bit versions at the same time, but the one you install second will overwrite the shortcut, so you should create a new shortcut to the first installation.
-
-When you want to switch game-platforms, just close Pale Moon, and start the other version.
+> **Notes:**  
+> *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
+> 
+> You can install both 64-bit and 32-bit versions at the same time, but the one you install second will overwrite the shortcut, so you should create a new shortcut to the first installation.
+> 
+> When you want to switch game-platforms, just close Pale Moon, and start the other version.
 
 ### Shockwave Games: (32-bit Pale Moon)
 1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
@@ -68,16 +68,16 @@ When you want to switch game-platforms, just close Pale Moon, and start the othe
 5. Start Pale Moon (32-bit version) and try to play a Shockwave wave like Hannah and the Pirate caves!
 6. See notes below, and Troubleshooting farther  below for resolutions to common issues.
 
-**Quick notes:** (See Troubleshooting below if you still have issues)
-When a game does not load/gets stuck at loading, try Fiddler->Rules->Performance->Simulate Modem Speed, and reload it. (More details in **Troubleshooting** section step #5. You can also try right clicking on it and hitting restart, and/or reloading the game a few times.
-
-Hannah and the Ice Caves: if you get the "Sorry. It appears that this game is not running at its intended location" error, you need to press and hold **Shift + o + k**. If that doesn't work, try it while it's loading.
-
-If you have issues, you can try the [10.1.0.110 installer](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.0.110.exe), but I haven't had any trouble with 10.1.3.018, other than a rare freeze/restart being necessary.
-
-It must be the FULL installer, otherwise you will get the error saying you don't have Shockwave installed.
-
-Be patient, sometimes you have to wait for it load a while, or let it continue, or even restart. But it should work 99% of the time once you get it working.
+> **Quick notes:** (See Troubleshooting below if you still have issues)  
+> When a game does not load/gets stuck at loading, try Fiddler->Rules->Performance->Simulate Modem Speed, and reload it. (More details in **Troubleshooting** section step #5. You can also try right clicking on it and hitting restart, and/or reloading the game a few times.
+>
+> Hannah and the Ice Caves: if you get the "Sorry. It appears that this game is not running at its intended location" error, you need to press and hold **Shift + o + k**. If that doesn't work, try it while it's loading.
+> 
+> If you have gameplay issues/glitches, you can try the [10.1.0.110 installer](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.0.110.exe), but I haven't had any trouble with 10.1.3.018, other than a rare freeze/restart being necessary.
+> 
+> Be patient, sometimes you have to wait for it load a while, or let it continue, or even restart. But it should work 99% of the time once you get it working.  
+> 
+> *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
 
 # Troubleshooting:
 
@@ -89,9 +89,10 @@ Be patient, sometimes you have to wait for it load a while, or let it continue, 
 5. In Fiddler, if you go to Rules->Performance->Simulate Modem Speeds, and then reload the game with cache disabled (open Pale Moon's Inspect Element tool inside the game window (try the outside edges outside the game area), click the Settings/Gear icon in the top-right of the Inspect window, and then enable "Disable HTTP Cache (when toolbox is open)", then reload the game with the Inspect window open and Simulate Modem Speeds enabled. This will make the game take a while to load, but it's worth it, because you don't have to reload it constantly and pray that your score will submit when you finally get a good one.
 6. If the game fails to load and gets stuck at the loading screen, try step #5, or reloading the game a couple times. Restart the browser if all else fails, especially with Shockwave, we're using old versions which can crash and freeze occasionally.
 7. If 3dvia games are the ones not working, go [here](https://3dlifeplayer.dl.3dvia.com/player/install/3DLifePlayer.js) and accept risk if prompted. (It probably means you didn't install/trust the certificate in the Fiddler instructions)
-8. If Hannah and the Ice Caves says, 'Cannot be run from this location', hold Shift + O + K (in that order) and it should start right up. Make sure you click inside the game window first. (letter O, like OK)
+8. If Hannah and the Ice Caves says, 'Sorry. It appears that this game is not running at its intended location', hold Shift + O + K (in that order) and it should start right up. Make sure you click inside the game window first. (letter O, like OK)
 9. If you start running out of memory, it's probably because you let Fiddler run too long while watching Youtube / streaming. Restart Fiddler and you should be fine.
 10. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. Close Pale Moon, and restart it from the 64-bit installation.
+11. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave, or 2. You didn't copy the plugins directory to your user profile.
 
 ### Pale Moon default installation locations:
 
