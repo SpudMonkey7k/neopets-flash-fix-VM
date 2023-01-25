@@ -69,7 +69,10 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 6. See notes below, and Troubleshooting farther  below for resolutions to common issues.
 
 > **Quick notes:** (See Troubleshooting below if you still have issues)  
-> When a game does not load/gets stuck at loading, try Fiddler->Rules->Performance->Simulate Modem Speed, and reload it. (More details in **Troubleshooting** section step #5. You can also try right clicking on it and hitting restart, and/or reloading the game a few times.
+> When a game does not load/gets stuck at loading, try enabling:  
+>>Fiddler->Rules->Performance->Simulate Modem Speed  
+>
+> and reload it. (More details in **Troubleshooting** section step #5. You can also try right-clicking in the game area and clicking Restart, and/or reloading the game a few times.
 >
 > Hannah and the Ice Caves: if you get the "Sorry. It appears that this game is not running at its intended location" error, you need to press and hold **Shift + o + k**. If that doesn't work, try it while it's loading.
 > 
