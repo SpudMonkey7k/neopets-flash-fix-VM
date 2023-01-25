@@ -9,7 +9,7 @@ This guide is overly detailed to make it approachable, so  don't be put off by a
 
 ### Fiddler - Required for all games
 
-You must install Fiddler Classic. This is because Neopets forces SSL now, and the games were never updated to support SSL. There are also some other game-specific issues that Fiddler allows us to fix.
+You must install Fiddler Classic. This is because Neopets forces SSL (HTTPS) now, and the games were never updated to support SSL/HTTPS. There are also some other game-specific issues that Fiddler allows us to fix.
 
 Fiddler, as configured, will act as a Man-in-the-middle (which is a good thing in this case, because YOU are the man-in-the-middle), which allows your browser to connect to Fiddler over HTTP, and then Fiddler bridges the connection to Neopets over HTTPS.
 
