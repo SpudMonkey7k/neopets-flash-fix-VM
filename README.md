@@ -28,7 +28,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 > B. Decrypt HTTPS Traffic  
 > C. Ignore Server Certificate Errors.
 4. Click Actions->Export Root Certificate to Desktop (This is to make Pale Moon trust the localhost and not give you constant certificate errors)
-5. (Optional) Click Actions->Trust Root Certificate. This will make other browsers (like Chrome), and Windows apps such as Discord, also trust the proxy (Fiddler). *This isn't strictly necessary, but if it's not done, you won't be able to use Chrome/Discord/Etc while Fiddler is running and intercepting traffic.*
+5. Click Actions->Trust Root Certificate. This will make other browsers (like Chrome), and Windows apps such as Discord, also trust the proxy (Fiddler). *This isn't strictly necessary, but if it's not done, you won't be able to use Chrome/Discord/Etc while Fiddler is running and intercepting traffic.*
 6. Download the [neopets folder in this project](https://download-directory.github.io/?url=https://github.com/themrrobert/neopets-flash-fix-windows-10/tree/main/neopets)
 7. Find fiddler installation path (usually C:\Program Files\Fiddler), create a folder named "neopets" and extract the downloaded neopets.zip files into it. Extract files should end up looking like C:\Program Files\Fiddler\neopets\games\...
 8. Close Fiddler.
