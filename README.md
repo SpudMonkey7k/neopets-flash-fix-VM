@@ -7,6 +7,10 @@ This guide is overly detailed to make it approachable, so  don't be put off by a
 
 ***Please read this entire guide before starting.*** You don't need to memorize it, but some information later on will definitely prove useful during installation, and there is no way to order everything perfectly for all use cases.
 
+### Disclaimer:
+
+Flash and Shockwave are dead content. Do not use flash/shockwave enabled browsers for anything other than Neopets (or other trusted flash game sites). Even then not I, nor anyone else can guarantee your safety using these extensions, so do so at your own risk!
+
 ### Fiddler - Required for all games
 
 You must install Fiddler Classic. This is because Neopets forces SSL (HTTPS) now, and the games were never updated to support SSL/HTTPS. There are also some other game-specific issues that Fiddler allows us to fix.
