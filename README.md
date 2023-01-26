@@ -36,9 +36,9 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 > **Notes:**  
 > #4. To install this certificate into Pale Moon, simply click "Pale Moon" at the top left (menu bar), and click Preferences. Then go to the "Advanced" tab, and then choose the "Certificates" sub-tab. Click "View Certificates" then click "Import" and locate the exported certificate on your desktop. It is named "FiddlerRoot.cer"
-> 
+>
 > #5. You can remove this certificate later via Windows Certificate Manager (certmgr.msc->Trusted Root Certification Authorities->Certificates). The name of the certificate is DO_NOT_TRUST so that you're well aware it's a local certificate, and not from a trusted Certificate Authority (CA). It is safe to trust this certificate, BUT the implications are that you will not see any genuine certificate errors from websites, so you should keep Fiddler closed when you're not using it, and you should remove the certificate if you stop playing Neopets games.
-> 
+>
 > Fiddler seems to need "Capture Traffic" enabled in order to work consistently (feel free to experiment). This means it logs every packet that is proxied throuogh it. So while you can watch Youtube on Chrome while running Fiddler, you should clear out the history/restart Fiddler once in a while, otherwise it will start using up all your memory holding a copy of every video packet!
 
 
@@ -58,9 +58,9 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 > **Notes:**  
 > *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
-> 
+>
 > You can install both 64-bit and 32-bit versions at the same time, but the one you install second will overwrite the shortcut, so you should create a new shortcut to the first installation.
-> 
+>
 > When you want to switch game-platforms, just close Pale Moon, and start the other version.
 
 ### Shockwave Games: (32-bit Pale Moon)
@@ -73,17 +73,17 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 6. See notes below, and Troubleshooting farther  below for resolutions to common issues.
 
 > **Quick notes:** (See Troubleshooting below if you still have issues)  
-> When a game does not load/gets stuck at loading, try enabling:  
->>Fiddler->Rules->Performance->Simulate Modem Speed  
+> When a game does not load/gets stuck at loading, try enabling:
+>>Fiddler->Rules->Performance->Simulate Modem Speed
 >
 > and reload it. (More details in **Troubleshooting** section step #5. You can also try right-clicking in the game area and clicking Restart, and/or reloading the game a few times.
 >
 > Hannah and the Ice Caves: if you get the "Sorry. It appears that this game is not running at its intended location" error, you need to press and hold **Shift + o + k**. If that doesn't work, try it while it's loading.
-> 
+>
 > If you have gameplay issues/glitches, you can try the [10.1.0.110 installer](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.0.110.exe), but I haven't had any trouble with 10.1.3.018, other than a rare freeze/restart being necessary.
-> 
-> Be patient, sometimes you have to wait for it load a while, or let it continue, or even restart. But it should work 99% of the time once you get it working.  
-> 
+>
+> Be patient, sometimes you have to wait for it load a while, or let it continue, or even restart. But it should work 99% of the time once you get it working.
+>
 > *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
 
 # Troubleshooting:
@@ -100,10 +100,12 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 9. If you start running out of memory, it's probably because you let Fiddler run too long while watching Youtube / streaming. Restart Fiddler and you should be fine.
 10. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. Close Pale Moon, and restart it from the 64-bit installation.
 11. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave, or 2. You didn't copy the plugins directory to your user profile.
+12. If the game doesn't fit / runs outside the window, this is usually because you're zoomed out. Reset zoom to 100% and reload the game.
+13. Terror Mountain Tilt: If you can't distinguish the colors of the rings, try switching to OpenGL or another renderer by right-clicking the game and going to Properties, iirc.
 
 ### Pale Moon default installation locations:
 
-1. Pale Moon 64-bit default location: c:\Program Files\Pale Moon\palemoon.exe  
+1. Pale Moon 64-bit default location: c:\Program Files\Pale Moon\palemoon.exe
 2. Pale Moon 32-bit default location: c:\Program Files (x86)\Pale Moon\palemoon.exe
 
 # References / Thank you's
@@ -111,8 +113,3 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 1. Thank you to [juvian](https://github.com/juvian/neopets-flash-fix) for the original version of this guide, got me a good deal of the way there, and I was only able to make this based off their amazing work with Fiddler.
 2. Thank you to andkon.com: their amazing [FAQ](http://andkon.com/arcade/faq.php) is the first resource I found, which got me going early.
 3. [andkon.com](http://andkon.com/arcade/faq.php) also has a "SECURITY CONSCIOUS WALKTHROUGH" on the linked page, which proves the authenticity and source of all provided binaries. (The linked binaries herein come from archive.org's adobe mirror)
-
-
-
-
-
