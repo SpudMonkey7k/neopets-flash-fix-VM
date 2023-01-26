@@ -21,7 +21,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 **Installation Instructions:**
 1. Install [Fiddler Classic](https://www.telerik.com/download/fiddler) (**NOT** "Fiddler Everywhere") There is no email confirmation, so just put in a fake email.
-2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules, and hit Ctrl+S to save. You should hear a slight ding.
+2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules (erase everything in there first), and hit Ctrl+S to save. You should hear a slight ding.
 3. In Fiddler go to Tools -> Options -> HTTPS.
 > **Enable:**  
 > - Capture HTTPS CONNECTs  
@@ -117,4 +117,3 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 1. Thank you to [juvian](https://github.com/juvian/neopets-flash-fix) for the original version of this guide, got me a good deal of the way there, and I was only able to make this based off their amazing work with Fiddler.
 2. Thank you to andkon.com: their amazing [FAQ](http://andkon.com/arcade/faq.php) is the first resource I found, which got me going early.
 3. [andkon.com](http://andkon.com/arcade/faq.php) also has a "SECURITY CONSCIOUS WALKTHROUGH" on the linked page, which proves the authenticity and source of all provided binaries. (The linked binaries herein come from archive.org's adobe mirror)
-
