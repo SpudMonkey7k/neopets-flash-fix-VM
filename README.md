@@ -21,7 +21,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 **Installation Instructions:**
 1. Install [Fiddler Classic](https://www.telerik.com/download/fiddler) (**NOT** "Fiddler Everywhere") There is no email confirmation, so just put in a fake email.
-2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and replace/add [CustomRules.js](/fiddler/CustomRules.js). Another option is in Fiddler, press Ctrl+R to edit the live rules, overwrite the content with my file, and Ctrl+S to save. You should hear a slight ding.
+2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules, and hit Ctrl+S to save. You should hear a slight ding.
 3. In Fiddler go to Tools -> Options -> HTTPS.
 > **Enable:**  
 > A. Capture HTTPS CONNECTs  
