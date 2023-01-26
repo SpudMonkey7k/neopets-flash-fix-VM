@@ -46,15 +46,17 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 0. Remove any existing installed Adobe Flash installations. *If running less than Windows 10, restart after each removal/installation.*
 1. Browser: Install [Pale Moon 64-bit latest](https://www.palemoon.org/download.php?mirror=us&bits=64&type=installer) (31.4.2 at time of writing, so use that version if you have issues)
 2. Install Flash version 32.0.0.371 [Download Flash Installer from Archive.org's Adobe Mirror](https://web.archive.org/web/2020*/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe)
-3. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
+3. Disable Auto Update for Pale Moon
+4. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
 
 *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
 
 ### 3dvia games (32-bit Pale Moon)
 1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
-2. Ensure Fiddler is configured and running, and then try to play a 3dvia game, like Shenku River Rush (just River Rush in the game list)
-3. This should automatically launch the installer the first time
-4. Enjoy!
+2. Disable Auto Update for Pale Moon
+3. Ensure Fiddler is configured and running, and then try to play a 3dvia game, like Shenku River Rush (just River Rush in the game list)
+4. This should automatically launch the installer the first time
+5. Enjoy!
 
 > **Notes:**  
 > *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
@@ -65,12 +67,14 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 ### Shockwave Games: (32-bit Pale Moon)
 1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
-2. Ensure all previous Shockwave installations are removed, and Pale Moon is closed.
-3. Ensure Pale Moon is closed, and then run the Shockwave installer. [Download Shockwave 10.1.3.018 from Archive.org](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.3.018.exe)
-4. **Important!** Before starting Pale Moon again, you must copy "C:\Program Files (x86)\Pale Moon\plugins\"
+2. Disable Auto Update for Pale Moon
+3. Ensure all previous Shockwave installations are removed, and Pale Moon is closed.
+4. Ensure Pale Moon is closed, and then run the Shockwave installer. [Download Shockwave 10.1.3.018 from Archive.org](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.3.018.exe)
+5. **Important!** Before starting Pale Moon again, you must copy "C:\Program Files (x86)\Pale Moon\plugins\"
    From "C:\Program Files (x86)\Pale Moon\plugins\", copy both "ShockwavePlugin.class" and "np32dsw.dll" and paste them into your "%appdata%\Moonchild Productions\Pale Moon\Profiles\RANDOM_NAME.default\" directory. RANDOM_NAME will be different for you, but you can put "%appdata%\Moonchild Productions\Pale Moon\Profiles\" into the Run box (without quotes) and it should open up the directory containing your profile folder. Just copy the plugins directory into your profile folder, and then you're good to go!
-5. Start Pale Moon (32-bit version) and try to play a Shockwave wave like Hannah and the Pirate caves!
-6. See notes below, and Troubleshooting farther  below for resolutions to common issues.
+6. Start Pale Moon (32-bit version) and try to play a Shockwave wave like Hannah and the Pirate caves!
+7. See notes below, and Troubleshooting farther  below for resolutions to common issues.
+8. **Recommended:** Before you click the "Play" button to load the game, go to Fiddler->Rules->Performance->Simulate Modem Speeds, and then load the game. This helps avoid a lot of headache. You can disable the option after the game loads.
 
 > **Quick notes:** (See Troubleshooting below if you still have issues)  
 > When a game does not load/gets stuck at loading, try enabling:
@@ -113,3 +117,4 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 1. Thank you to [juvian](https://github.com/juvian/neopets-flash-fix) for the original version of this guide, got me a good deal of the way there, and I was only able to make this based off their amazing work with Fiddler.
 2. Thank you to andkon.com: their amazing [FAQ](http://andkon.com/arcade/faq.php) is the first resource I found, which got me going early.
 3. [andkon.com](http://andkon.com/arcade/faq.php) also has a "SECURITY CONSCIOUS WALKTHROUGH" on the linked page, which proves the authenticity and source of all provided binaries. (The linked binaries herein come from archive.org's adobe mirror)
+
