@@ -23,10 +23,10 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 1. Install [Fiddler Classic](https://www.telerik.com/download/fiddler) (**NOT** "Fiddler Everywhere") There is no email confirmation, so just put in a fake email.
 2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules (erase everything in there first), and hit Ctrl+S to save. You should hear a slight ding.
 3. In Fiddler go to Tools -> Options -> HTTPS.
-> **Enable:**  
-> - Capture HTTPS CONNECTs  
-> - Decrypt HTTPS Traffic  
-> - Ignore Server Certificate Errors.  
+> **Enable:**
+> - Capture HTTPS CONNECTs
+> - Decrypt HTTPS Traffic
+> - Ignore Server Certificate Errors.
 > 4. Click Actions->Export Root Certificate to Desktop (This is to make Pale Moon trust the localhost and not give you constant certificate errors)
 > 5. Click Actions->Trust Root Certificate. This will make other browsers (like Chrome), and Windows apps such as Discord, also trust the proxy (Fiddler). *This isn't strictly necessary, but if it's not done, you won't be able to use Chrome/Discord/Etc while Fiddler is running and intercepting traffic.*
 6. Download the [neopets folder in this project](https://download-directory.github.io/?url=https://github.com/themrrobert/neopets-flash-fix-windows-10/tree/main/neopets)
@@ -66,6 +66,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 > When you want to switch game-platforms, just close Pale Moon, and start the other version.
 
 ### Shockwave Games: (32-bit Pale Moon)
+0. Important! You need to follow the 'Bad Driver Bug' direction
 1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
 2. Disable Auto Update for Pale Moon
 3. Ensure all previous Shockwave installations are removed, and Pale Moon is closed.
@@ -76,7 +77,29 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 7. See notes below, and Troubleshooting farther  below for resolutions to common issues.
 8. **Recommended:** Before you click the "Play" button to load the game, go to Fiddler->Rules->Performance->Simulate Modem Speeds, and then load the game. This helps avoid a lot of headache. You can disable the option after the game loads.
 
-> **Quick notes:** (See Troubleshooting below if you still have issues)  
+**Bad Driver Bug**
+- See full details here: https://gaming.stackexchange.com/questions/339173/how-can-i-play-dcr-shockwave-games?newreg=534f64e9e2ad4f698d7c1607667a48df
+
+Quick fix:
+1. Open run box / start and type regedit and hit enter.
+2. Navigate to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Video
+3. Search (Ctrl+F) for InstalledDisplayDrivers
+4. Double click InstalledDisplayDrivers and remove all the paths / duplicates.
+
+Example: If your InstalledDisplayDrivers looks like this:
+> C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumdx.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumdx.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumdx.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumdx.dll
+> C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumd.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumd.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumd.dll,C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_f840d03a202f8a32\nvldumd.dll
+
+Change it to:
+> nvldumdx.dll  
+> nvldumd.dll
+
+You might get this error, just ignore it:
+> Data of type REG_MULTI_SZ cannot contain empty strings.  
+> Registry Editor will remove all empty strings found.
+
+
+**Additional Shockwave Notes:** (See Troubleshooting below if you still have issues)  
 > When a game does not load/gets stuck at loading, try enabling:
 >>Fiddler->Rules->Performance->Simulate Modem Speed
 >
