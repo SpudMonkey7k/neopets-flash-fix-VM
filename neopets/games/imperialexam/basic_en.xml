@@ -1,0 +1,256 @@
+
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sets>
+
+	<set>
+		<correct><![CDATA[action]]></correct>
+     		<wrong><![CDATA[actoin]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[also]]></correct>
+     		<wrong><![CDATA[aslo]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[actually]]></correct>
+     		<wrong><![CDATA[actualy]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[beginner]]></correct>
+     		<wrong><![CDATA[begginer]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[between]]></correct>
+     		<wrong><![CDATA[betweeen]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[chief]]></correct>
+     		<wrong><![CDATA[cheif]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[concern]]></correct>
+     		<wrong><![CDATA[consern]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[definite]]></correct>
+     		<wrong><![CDATA[definit]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[develop]]></correct>
+     		<wrong><![CDATA[develope]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[error]]></correct>
+     		<wrong><![CDATA[erorr]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[even]]></correct>
+     		<wrong><![CDATA[evven]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[further]]></correct>
+     		<wrong><![CDATA[futher]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[forehead]]></correct>
+     		<wrong><![CDATA[forhead]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[galaxy]]></correct>
+     		<wrong><![CDATA[galaxi]]></wrong>
+	</set>
+
+
+	<set>
+		<correct><![CDATA[guard]]></correct>
+     		<wrong><![CDATA[gaurd]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[happen]]></correct>
+     		<wrong><![CDATA[hapen]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[hero]]></correct>
+     		<wrong><![CDATA[heroe]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[interest]]></correct>
+     		<wrong><![CDATA[intrest]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[imagine]]></correct>
+     		<wrong><![CDATA[immagine]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[jump]]></correct>
+     		<wrong><![CDATA[junp]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[knowledge]]></correct>
+     		<wrong><![CDATA[knoledge]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[library]]></correct>
+     		<wrong><![CDATA[libary]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[little]]></correct>
+     		<wrong><![CDATA[littel]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[lively]]></correct>
+     		<wrong><![CDATA[livley]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[myself]]></correct>
+     		<wrong><![CDATA[mysef]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[market]]></correct>
+     		<wrong><![CDATA[markit]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[night]]></correct>
+     		<wrong><![CDATA[nihgt]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[notice]]></correct>
+     		<wrong><![CDATA[notise]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[numb]]></correct>
+     		<wrong><![CDATA[nubm]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[occur]]></correct>
+     		<wrong><![CDATA[ocurr]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[oxygen]]></correct>
+     		<wrong><![CDATA[oxigen]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[place]]></correct>
+     		<wrong><![CDATA[palce]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[piece]]></correct>
+     		<wrong><![CDATA[peice]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[quick]]></correct>
+     		<wrong><![CDATA[quikc]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[really]]></correct>
+     		<wrong><![CDATA[raelly]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[record]]></correct>
+     		<wrong><![CDATA[recrod]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[shadow]]></correct>
+     		<wrong><![CDATA[shaddow]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[sneeze]]></correct>
+     		<wrong><![CDATA[sneese]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[these]]></correct>
+     		<wrong><![CDATA[theese]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[their]]></correct>
+     		<wrong><![CDATA[thier]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[unused]]></correct>
+     		<wrong><![CDATA[unsed]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[until]]></correct>
+     		<wrong><![CDATA[untill]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[usually]]></correct>
+     		<wrong><![CDATA[usualy]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[value]]></correct>
+     		<wrong><![CDATA[valeu]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[without]]></correct>
+     		<wrong><![CDATA[withuot]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[worry]]></correct>
+     		<wrong><![CDATA[woory]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[working]]></correct>
+     		<wrong><![CDATA[wokring]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[yellow]]></correct>
+     		<wrong><![CDATA[yelow]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[yawn]]></correct>
+     		<wrong><![CDATA[yawwn]]></wrong>
+	</set>
+
+	<set>
+		<correct><![CDATA[zero]]></correct>
+     		<wrong><![CDATA[zerro]]></wrong>
+	</set>
+
+</sets>
