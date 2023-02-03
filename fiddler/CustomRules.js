@@ -196,7 +196,7 @@ class Handlers
 				oSession.utilSetRequestBody(oSession.GetRequestBodyAsString().Replace("lang=ch", "lang=en"));	
 			}
 			//fixes extra
-			if (oSession.uriContains(".swf") || oSession.uriContains(".txt") || oSession.oRequest.headers.Exists("x-flash-version")) {
+			if (oSession.uriContains(".swf") || oSession.uriContains(".xml")  || oSession.uriContains(".txt") || oSession.oRequest.headers.Exists("x-flash-version")) {
 				var path = "neopets" + oSession.PathAndQuery
 				if (oSession.oRequest.headers.Exists("x-flash-version")) {
 					path = path.Split("?")[0];
