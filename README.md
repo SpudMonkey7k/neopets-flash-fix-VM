@@ -1,7 +1,7 @@
 # Play Flash, Shockwave, and 3dvia Neopets games on Windows 10! Works in 2022 / 2023
 
 ### Preface:
-This guide is for Windows 10 only. The steps SHOULD work on Windows 7/8, and MIGHT work on Windows 11.
+This guide is confirmed to work on Windows 10 and 11. The steps SHOULD work on Windows 7/8, also, but some things might be different, like installation paths.
 
 This guide is overly detailed to make it approachable, so  don't be put off by all the steps. It should be as easy to follow as possible. Some computer knowledge will definitely help.
 
