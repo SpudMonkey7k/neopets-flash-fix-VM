@@ -45,7 +45,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 ### Flash Games: (64-bit Pale Moon)
 0. Remove any existing installed Adobe Flash installations. *If running less than Windows 10, restart after each removal/installation.*
 1. Browser: Install [Pale Moon 64-bit latest](https://www.palemoon.org/download.php?mirror=us&bits=64&type=installer) (31.4.2 at time of writing, so use that version if you have issues)
-2. Install Flash version 32.0.0.371 [Download Flash Installer from Archive.org's Adobe Mirror](https://web.archive.org/web/2020*/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe) [Alternate Link](https://web.archive.org/web/20200523210841/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe)
+2. Install Flash version 32.0.0.371 [Download Flash Installer](https://web.archive.org/web/2020*/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe) from Archive.org's Adobe Mirror | [Alternate Link](https://web.archive.org/web/20200523210841/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe)
 3. Disable Auto Update for Pale Moon
 4. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
 
