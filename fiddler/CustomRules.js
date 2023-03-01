@@ -334,7 +334,7 @@ class Handlers
 							respBody.Replace('redirect("post")','redirect("reload")');
 						} else if (oSession.HTTPMethodIs('POST')) {
 							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
-							var replacementStr = "function addFields(formObj){const postData = FORM_DATA;const previousPage = PREV_PAGE;const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = parts[0];newMem.value = parts[1];formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);}";
+							var replacementStr = "function addFields(formObj){const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = parts[0];newMem.value = parts[1];formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);}";
 							var data = oSession.GetRequestBodyAsString();
 							var prev = oSession.oRequest.headers['Referer'];
 							replacementStr = replacementStr.replace('FORM_DATA', data);
