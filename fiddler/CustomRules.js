@@ -177,28 +177,6 @@ class Handlers
 		
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
-			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
-			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
-				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
-				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 8000) {
-					var respBody = oSession.GetResponseBodyAsString();
-					// Check if this is a stackpath response:
-					if (respBody.Contains('<!doctype html> <html lang="en">')) {
-						if (oSession.HTTPMethodIs('GET')) {
-							// Just reload GET's so they don't lose the request URI
-							respBody.Replace('redirect("post")','redirect("reload")');
-						} else if (oSession.HTTPMethodIs('POST')) {
-							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
-							var replacementStr = "function addFields(formObj){const postData = FORM_DATA;const previousPage = PREV_PAGE;const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = parts[0];newMem.value = parts[1];formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);}";
-							var data = oSession.GetRequestBodyAsString();
-							var prev = oSession.oRequest.headers['Referer'];
-							replacementStr.Replace('FORM_DATA', data);
-							replacementStr.Replace('PREV_PAGE', prev);
-							respBody.Replace('function addFields(formObj){}', replacementStr);
-						}
-					}
-				}
-			}
 
 			if (oSession.HostnameIs("dev.neopets.com")) {
 				oSession.host = "www.neopets.com";
@@ -344,6 +322,29 @@ class Handlers
 			oSession.oResponse.headers.Remove('X-HW');
 		}				
 		if (oSession.host.Contains("neopets.com")) {
+			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
+			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
+				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
+				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 8000) {
+					var respBody = oSession.GetResponseBodyAsString();
+					// Check if this is a stackpath response:
+					if (respBody.Contains('<!doctype html> <html lang="en">')) {
+						if (oSession.HTTPMethodIs('GET')) {
+							// Just reload GET's so they don't lose the request URI
+							respBody.Replace('redirect("post")','redirect("reload")');
+						} else if (oSession.HTTPMethodIs('POST')) {
+							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
+							var replacementStr = "function addFields(formObj){const postData = FORM_DATA;const previousPage = PREV_PAGE;const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = parts[0];newMem.value = parts[1];formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);}";
+							var data = oSession.GetRequestBodyAsString();
+							var prev = oSession.oRequest.headers['Referer'];
+							replacementStr.Replace('FORM_DATA', data);
+							replacementStr.Replace('PREV_PAGE', prev);
+							respBody.Replace('function addFields(formObj){}', replacementStr);
+							oSession.utilSetResponseBody(respBody);
+						}
+					}
+				}
+			}
 			//fixes shockwave games
 			if (oSession.uriContains("play_shockwave.phtml") && oSession.GetResponseBodyAsString().Contains("game_container")) {
 				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('document.write', 'console.log').Replace("swRestart='false'", "swRestart='true'").Replace("swContextMenu='false'", "swContextMenu='true'"));		
