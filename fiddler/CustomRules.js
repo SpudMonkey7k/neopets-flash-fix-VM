@@ -325,10 +325,10 @@ class Handlers
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
 				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
-				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 8000) {
+				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 2000) {
 					var respBody = oSession.GetResponseBodyAsString();
 					// Check if this is a stackpath response:
-					if (respBody.Contains('<!doctype html> <html lang="en">')) {
+					if (respBody.Length < 30000 && respBody.Contains('<!doctype html> <html lang="en">')) {
 						if (oSession.HTTPMethodIs('GET')) {
 							// Just reload GET's so they don't lose the request URI
 							respBody.Replace('redirect("post")','redirect("reload")');
@@ -337,10 +337,10 @@ class Handlers
 							var replacementStr = "function addFields(formObj){const postData = FORM_DATA;const previousPage = PREV_PAGE;const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = parts[0];newMem.value = parts[1];formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);}";
 							var data = oSession.GetRequestBodyAsString();
 							var prev = oSession.oRequest.headers['Referer'];
-							replacementStr.Replace('FORM_DATA', data);
-							replacementStr.Replace('PREV_PAGE', prev);
-							respBody.Replace('function addFields(formObj){}', replacementStr);
-							oSession.utilSetResponseBody(respBody);
+							replacementStr = replacementStr.replace('FORM_DATA', data);
+							replacementStr = replacementStr.replace('PREV_PAGE', prev);
+							oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
+							oSession["ui-backcolor"] = "lime";
 						}
 					}
 				}
