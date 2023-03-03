@@ -322,6 +322,19 @@ class Handlers
 			oSession.oResponse.headers.Remove('X-HW');
 		}				
 		if (oSession.host.Contains("neopets.com")) {
+			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
+			if (oSession.uriContains('play_flash.phtml')) {
+				const hiddenMatch = '</body>';
+				const hiddenStr = '<script type="text/javascript">$(document).ready(function () { $("#game_container").show(); });</script></body>';
+				const lagRegex = /\s+\<script type=\"text\/javascript\"\>\s*\n\s*function pwR[^`]*playwire\.com[^`]*data-id=\"pwPlayer\"\s*\n?\s*\>\s*\n?\s*\<\/script\>/;
+				const lagReplace = '';
+				
+				var body = oSession.GetResponseBodyAsString();
+				body = body.replace(lagRegex, lagReplace).replace(hiddenMatch, hiddenStr);
+				oSession.utilSetResponseBody(body);
+				if (body != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
+				
+			} else
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
 				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
