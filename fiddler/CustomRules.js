@@ -359,6 +359,12 @@ class Handlers
 					}
 				}
 			}
+			//fixes coconut shy
+			if (oSession.uriContains("halloween/coconutshy.phtml")) {
+				const cocoRegex = /coconutshy_v6.swf\?lang=([a-zA-Z]{2})&baseurl=[^']*/;
+				const body = oSession.GetResponseBodyAsString().replace(cocoRegex, 'coconutshy_v6.swf?lang=$1');
+				oSession.utilSetResponseBody(body);
+			}
 			//fixes shockwave games
 			if (oSession.uriContains("play_shockwave.phtml") && oSession.GetResponseBodyAsString().Contains("game_container")) {
 				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('document.write', 'console.log').Replace("swRestart='false'", "swRestart='true'").Replace("swContextMenu='false'", "swContextMenu='true'"));		
