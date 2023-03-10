@@ -329,10 +329,10 @@ class Handlers
 				const lagRegex = /\s+\<script type=\"text\/javascript\"\>\s*\n\s*function pwR[^`]*playwire\.com[^`]*data-id=\"pwPlayer\"\s*\n?\s*\>\s*\n?\s*\<\/script\>/;
 				const lagReplace = '';
 				
-				var body = oSession.GetResponseBodyAsString();
-				body = body.replace(lagRegex, lagReplace).replace(hiddenMatch, hiddenStr);
-				oSession.utilSetResponseBody(body);
-				if (body != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
+				var adFixerBody = oSession.GetResponseBodyAsString();
+				adFixerBody = adFixerBody.replace(lagRegex, lagReplace).replace(hiddenMatch, hiddenStr);
+				oSession.utilSetResponseBody(adFixerBody);
+				if (adFixerBody != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
 				
 			} else
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
@@ -362,8 +362,8 @@ class Handlers
 			//fixes coconut shy
 			if (oSession.uriContains("halloween/coconutshy.phtml")) {
 				const cocoRegex = /coconutshy_v6.swf\?lang=([a-zA-Z]{2})&baseurl=[^']*/;
-				const body = oSession.GetResponseBodyAsString().replace(cocoRegex, 'coconutshy_v6.swf?lang=$1');
-				oSession.utilSetResponseBody(body);
+				const cocoShyBody = oSession.GetResponseBodyAsString().replace(cocoRegex, 'coconutshy_v6.swf?lang=$1');
+				oSession.utilSetResponseBody(cocoShyBody);
 			}
 			//fixes shockwave games
 			if (oSession.uriContains("play_shockwave.phtml") && oSession.GetResponseBodyAsString().Contains("game_container")) {
