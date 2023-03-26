@@ -359,6 +359,10 @@ class Handlers
 					}
 				}
 			}
+			// Re-enable multiple Gallery Upgrades by spam-clicking
+			if (oSession.uriContains('/gallery_desc_edit.phtml?type=edit')) {
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('onSubmit="return one_submit();"', ''));
+			}
 			//fixes coconut shy
 			if (oSession.uriContains("halloween/coconutshy.phtml")) {
 				const cocoRegex = /coconutshy_v6.swf\?lang=([a-zA-Z]{2})&baseurl=[^']*/;
