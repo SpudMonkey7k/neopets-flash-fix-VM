@@ -363,7 +363,7 @@ class Handlers
 				if (txFile.Contains('<!doctype html> <html lang="en">') || txFile.Contains('<title>Neopets - Loading site...</title>')) {
 					// Check if this is stack path
 					oSession["ui-backcolor"] = "red";
-					FiddlerObject.alert('Stackpath blocked the translation!');
+					// FiddlerObject.alert('Stackpath blocked the translation!');
 				} else {
 					// Otherwise continue with the file uplaod
 					var boundary = "NeoFixes.com-------------aEaEaE";
