@@ -345,12 +345,13 @@ class Handlers
 			oSession.oResponse.headers.Remove('x-sp-metadata');
 			oSession.oResponse.headers.Remove('X-HW');
 		}
-		if (
-			oSession.host.Contains('neofixes.com') &&
-			oSession.responseCode == 404 &&
-			oSession.oRequest.headers.ExistsAndContains('X-NeoFixes', 'get-translation')
-		) {
-			FiddlerObject.alert("This translation doesn't exist in our database!\n\nEnable:\n\tRules->Advanced->Force Neo Translations\nand reload the game.\n\nAnd please consider enabling:\n\tRules->Advanced->Auto Upload Translations\nto help others in your situation!");
+		if (oSession.host.Contains('neofixes.com')) {
+			if (oSession.responseCode == 404 &&	oSession.oRequest.headers.ExistsAndContains('X-NeoFixes', 'get-translation')) {
+				FiddlerObject.alert("This translation doesn't exist in our database!\n\nEnable:\n\tRules->Advanced->Force Neo Translations\nand reload the game.\n\nAnd please consider enabling:\n\tRules->Advanced->Auto Upload Translations\nto help others in your situation!");
+			}
+			if (oSession.oResponse.headers.Exists('X-NF-Message')) {
+				FiddlerObject.alert(oSession.oResponse.headers['X-NF-Message']);
+			}
 		}
 		if (oSession.host.Contains("neopets.com")) {
 			// Automatically upload translation:
