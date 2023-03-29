@@ -1,5 +1,24 @@
 # Play Flash, Shockwave, and 3dvia Neopets games on Windows 10 and Windows 11! Works in 2022 / 2023
 
+## 2023-03-29: README FIRST! Important Update - Translation Mirror!
+We are pleased to give you an amazing new feature! This will prevent Stackpath from interfering with your game loading. No more "undefined" instead of the game text!
+
+The way this works is, it redirects the request for the translations to a mirror, which will never respond with a stack path interruption!
+
+If you encounter a language/game combo that doesn't work, you should hear a 'Ding' accompanied by an Alert popup. (Sometimes this popup is hidden, and you have to hover over the Fiddler task bar menu and select the pop up)
+
+The options to control this are in Rules->Advanced.
+- "Use Neopets Translations" will make it load translations from Neopets (the old way)
+- "Auto Upload Translations" this will upload the translations automatically as you play the games.
+- "Has Neopets Premium." - This option disabled the "Cannot load player config" fix, because Premium members aren't affected by it. Only enable this if you have Premium!
+
+**We need people from different languages to use the *Auto Upload Translations* option!**
+
+We believe we have all of the English language games mirrored, so if you're on English, you don't have to do anything!
+
+Note: There is also an option in Rules->Advanced->
+
+
 ### Preface:
 This guide is confirmed to work on Windows 10 and 11. The steps SHOULD work on Windows 7/8, also, but some things might be different, like installation paths.
 
