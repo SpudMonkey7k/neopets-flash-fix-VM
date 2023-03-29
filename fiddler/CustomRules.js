@@ -67,7 +67,7 @@ class Handlers
 
 	// You can create a custom menu like so:
 	/*
-	QuickLinkMenu("&Links") 
+	QuickLinkMenu("&Links")
 	QuickLinkItem("IE GeoLoc TestDrive", "http://ie.microsoft.com/testdrive/HTML5/Geolocation/Default.html")
 	QuickLinkItem("FiddlerCore", "http://fiddler2.com/fiddlercore")
 	public static function DoLinksMenu(sText: String, sAction: String)
@@ -86,7 +86,7 @@ class Handlers
 
 	// Cause Fiddler Classic to override the User-Agent header with one of the defined values
 	// The page http://browserscope2.org/browse?category=selectors&ua=Mobile%20Safari is a good place to find updated versions of these
-	RulesString("&User-Agents", true) 
+	RulesString("&User-Agents", true)
 	BindPref("fiddlerscript.ephemeral.UserAgentString")
 	RulesStringValue(0,"Netscape &3", "Mozilla/3.0 (Win95; I)")
 	RulesStringValue(1,"WinPhone8.1", "Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; NOKIA; Lumia 520) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537")
@@ -126,11 +126,23 @@ class Handlers
 
 	public static RulesOption("Cache Always &Fresh", "Per&formance")
 	var m_AlwaysFresh: boolean = false;
-		
+
+	public static RulesOption("Has Neopets &Premium", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.has_premium")
+	var m_HasNeopetsPremium: boolean = false;
+
+	public static RulesOption("Use Neo Translations", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.neo_trans")
+	var m_UseNeopetsTranslations: boolean = false;
+
+	public static RulesOption("&Upload Translations", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.upload_trans")
+	var m_UploadTranslations: boolean = false;
+
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
 	public static ToolsAction("Reset Script")
-	function DoManualReload() { 
+	function DoManualReload() {
 		FiddlerObject.ReloadScript();
 	}
 
@@ -152,10 +164,10 @@ class Handlers
 
 		// Sample Rule: Break requests for URLs containing "/sandbox/"
 		// if (oSession.uriContains("/sandbox/")) {
-		//	 oSession.oFlags["x-breakrequest"] = "yup";	// Existence of the x-breakrequest flag creates a breakpoint; the "yup" value is unimportant.
+		//     oSession.oFlags["x-breakrequest"] = "yup";	// Existence of the x-breakrequest flag creates a breakpoint; the "yup" value is unimportant.
 		// }
 		/*
-		if (oSession.host == "umwatson.events.data.microsoft.com" 
+		if (oSession.host == "umwatson.events.data.microsoft.com"
 			// && (oSession.oRequest.headers.HTTPMethod == "GET")
 		) {
 			oSession["ui-backcolor"] = "green";   // Simplify debugging
@@ -165,16 +177,24 @@ class Handlers
 		}
 		*/
 		if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
-			oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith); 
+			oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith);
 		}
 		if ((null != gs_OverridenHost) && (oSession.host.toLowerCase() == gs_OverridenHost)) {
-			oSession["x-overridehost"] = gs_OverrideHostWith; 
+			oSession["x-overridehost"] = gs_OverrideHostWith;
 		}
 
 		if ((null!=bpRequestURI) && oSession.uriContains(bpRequestURI)) {
 			oSession["x-breakrequest"]="uri";
 		}
-		
+		// Fixes stackpath interfering with game translation file loading by using a mirror:
+		if (!m_UseNeopetsTranslations && oSession.url.Contains('/gettranslationxml.phtml')) {
+			if (oSession.HTTPMethodIs("CONNECT") == false) {
+				oSession.oRequest.headers['X-NeoFixes'] = 'get-translation';
+				oSession.host = "www.neofixes.com";
+			}
+		}
+
+
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
@@ -191,12 +211,16 @@ class Handlers
 			if (oSession.uriContains("games/g226/config.xml")) {
 				oSession.host = "images.neopets.com";
 			}
-			//fixes games pointing to dev server that have chinese lang when offline	
+			//fixes games pointing to dev server that have chinese lang when offline
 			if (oSession.uriContains("gettranslationxml.phtml") && oSession.HTTPMethodIs("POST")) {
-				oSession.utilSetRequestBody(oSession.GetRequestBodyAsString().Replace("lang=ch", "lang=en"));	
+				oSession.utilSetRequestBody(oSession.GetRequestBodyAsString().Replace("lang=ch", "lang=en"));
 			}
 			//fixes extra
-			if (oSession.uriContains(".swf") || oSession.uriContains(".xml")  || oSession.uriContains(".txt") || oSession.oRequest.headers.Exists("x-flash-version")) {
+			if (
+				oSession.uriContains(".swf") || oSession.uriContains(".txt") ||
+				oSession.uriContains('.xml') || oSession.oRequest.headers['Referer'].Contains('.swf') ||
+				oSession.oRequest.headers.Exists("x-flash-version")
+			) {
 				var path = "neopets" + oSession.PathAndQuery
 				if (oSession.oRequest.headers.Exists("x-flash-version")) {
 					path = path.Split("?")[0];
@@ -209,7 +233,7 @@ class Handlers
 						oSession.oResponse.headers["Content-Type"] = "text/xml";
 					}
 				}
-				
+
 			}
 		}
 
@@ -223,9 +247,9 @@ class Handlers
 
 		if (m_SimulateModem) {
 			// Delay sends by 300ms per KB uploaded.
-			oSession["request-trickle-delay"] = "150"; 
+			oSession["request-trickle-delay"] = "150";
 			// Delay receives by 150ms per KB downloaded.
-			oSession["response-trickle-delay"] = "50"; 
+			oSession["response-trickle-delay"] = "50";
 		}
 
 		if (m_DisableCaching) {
@@ -236,7 +260,7 @@ class Handlers
 
 		// User-Agent Overrides
 		if (null != sUA) {
-			oSession.oRequest["User-Agent"] = sUA; 
+			oSession.oRequest["User-Agent"] = sUA;
 		}
 
 		if (m_Japanese) {
@@ -255,18 +279,18 @@ class Handlers
 	// been read from the client. This is typically too early to do much useful
 	// work, since the body hasn't yet been read, but sometimes it may be useful.
 	//
-	// For instance, see 
+	// For instance, see
 	// http://blogs.msdn.com/b/fiddler/archive/2011/11/05/http-expect-continue-delays-transmitting-post-bodies-by-up-to-350-milliseconds.aspx
 	// for one useful thing you can do with this handler.
 	//
 	// Note: oSession.requestBodyBytes is not available within this function!
 
 	static var saved_cookies;
-			
+
 	static function OnPeekAtRequestHeaders(oSession: Session) {
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false && oSession.HostnameIs("swf.neopets.com") == false) {
 			oSession.oRequest.headers.UriScheme = "https";
-			
+
 			//fixes Clara on Ice, Let it Slide, Extreme Potato Counter
 			if (oSession.uriContains(".swf") || oSession.uriContains("/config.xml") || oSession.uriContains("/shellconfig.xml")) {
 				oSession.host = "images.neopets.com";
@@ -274,21 +298,21 @@ class Handlers
 			}
 			//fixes kacheek seek
 			if (oSession.uriContains("process_hideandseek.phtml")) {
-				oSession.oRequest.headers["Referer"] = "http://www.neopets.com/games/hidenseek";	
+				oSession.oRequest.headers["Referer"] = "http://www.neopets.com/games/hidenseek";
 			}
 		}
 	}
 
 
 	//
-	// If a given session has response streaming enabled, then the OnBeforeResponse function 
+	// If a given session has response streaming enabled, then the OnBeforeResponse function
 	// is actually called AFTER the response was returned to the client.
 	//
-	// In contrast, this OnPeekAtResponseHeaders function is called before the response headers are 
-	// sent to the client (and before the body is read from the server).  Hence this is an opportune time 
-	// to disable streaming (oSession.bBufferResponse = true) if there is something in the response headers 
+	// In contrast, this OnPeekAtResponseHeaders function is called before the response headers are
+	// sent to the client (and before the body is read from the server).  Hence this is an opportune time
+	// to disable streaming (oSession.bBufferResponse = true) if there is something in the response headers
 	// which suggests that tampering with the response body is necessary.
-	// 
+	//
 	// Note: oSession.responseBodyBytes is not available within this function!
 	//
 	static function OnPeekAtResponseHeaders(oSession: Session) {
@@ -302,7 +326,7 @@ class Handlers
 			oSession["x-breakresponse"]="status";
 			oSession.bBufferResponse = true;
 		}
-		
+
 		if ((null!=bpResponseURI) && oSession.uriContains(bpResponseURI)) {
 			oSession["x-breakresponse"]="uri";
 			oSession.bBufferResponse = true;
@@ -320,21 +344,61 @@ class Handlers
 		if (oSession.uriContains('dgs_get_game_data.phtml')) {
 			oSession.oResponse.headers.Remove('x-sp-metadata');
 			oSession.oResponse.headers.Remove('X-HW');
-		}				
+		}
+		if (
+			oSession.host.Contains('neofixes.com') &&
+			oSession.responseCode == 404 &&
+			oSession.oRequest.headers.ExistsAndContains('X-NeoFixes', 'get-translation')
+		) {
+			FiddlerObject.alert("This translation doesn't exist in our database!\n\nEnable:\n\tRules->Advanced->Force Neo Translations\nand reload the game.\n\nAnd please consider enabling:\n\tRules->Advanced->Auto Upload Translations\nto help others in your situation!");
+		}
 		if (oSession.host.Contains("neopets.com")) {
+			// Automatically upload translation:
+			if (m_UseNeopetsTranslations && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
+				var uri = "POST https://www.neofixes.com/api/upload_translation.phtml HTTP/1.0";
+				var headers = ["Host: www.neofixes.com"];
+				var txData = oSession.GetRequestBodyAsString();
+				var txFile = oSession.GetResponseBodyAsString();
+
+				if (txFile.Contains('<!doctype html> <html lang="en">') || txFile.Contains('<title>Neopets - Loading site...</title>')) {
+					// Check if this is stack path
+					oSession["ui-backcolor"] = "red";
+					FiddlerObject.alert('Stackpath blocked the translation!');
+				} else {
+					// Otherwise continue with the file uplaod
+					var boundary = "NeoFixes.com-------------aEaEaE";
+					var content = '--' + boundary + '\r\nContent-Disposition: form-data; name="txData"\r\n\r\n' + txData;
+					content += '\r\n--' + boundary + '\r\nContent-Disposition: form-data; name="txURI"\r\n\r\n' + oSession.fullUrl;
+					content += '\r\n--' + boundary + '\r\nContent-Disposition: form-data; name="txFile"; filename="translation.xml"\r\nContent-Type: text/xml\r\n\r\n' + txFile;
+					content += '\r\n--' + boundary + '--';
+					// Build headers now that we have the size:
+					headers.push('User-Agent: NeoFixer.com Autouploader');
+					headers.push("Content-type: multipart/form-data; boundary=" + boundary);
+					headers.push("Content-length: " + content.length);
+					var sRequest = uri + "\r\n" + headers.join("\r\n") + '\r\n\r\n';
+					try {
+						var newReq = FiddlerObject.utilIssueRequest(sRequest + content);
+
+					} catch (e) {
+						FiddlerObject.alert(e);
+					}
+				}
+
+			}
+
 			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
-			if (oSession.uriContains('play_flash.phtml')) {
+			if (!m_HasNeopetsPremium && oSession.uriContains('play_flash.phtml')) {
 				const hiddenMatch = '</body>';
 				const hiddenStr = '<script type="text/javascript">$(document).ready(function () { $("#game_container").show(); });</script></body>';
 				const lagRegex = /\s+\<script type=\"text\/javascript\"\>\s*\n\s*function pwR[^`]*playwire\.com[^`]*data-id=\"pwPlayer\"\s*\n?\s*\>\s*\n?\s*\<\/script\>/;
 				const lagReplace = '';
-				
+
 				var adFixerBody = oSession.GetResponseBodyAsString();
 				adFixerBody = adFixerBody.replace(lagRegex, lagReplace).replace(hiddenMatch, hiddenStr);
 				oSession.utilSetResponseBody(adFixerBody);
 				if (adFixerBody != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
-				
-			} else
+
+			}
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
 				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
@@ -348,11 +412,11 @@ class Handlers
 						} else if (oSession.HTTPMethodIs('POST')) {
 							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
 							var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
-							var data = oSession.GetRequestBodyAsString().replace(/\+/g, ' ');
+							var data = oSession.GetRequestBodyAsString();
 							var prev = oSession.oRequest.headers['Referer'];
 							replacementStr = replacementStr.replace('FORM_ACTION', oSession.fullUrl);
-							replacementStr = replacementStr.replace('FORM_DATA', data);
-							replacementStr = replacementStr.replace('PREV_PAGE', prev);
+							replacementStr = replacementStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
+							replacementStr = replacementStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
 							oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
 							oSession["ui-backcolor"] = "lime";
 						}
@@ -369,13 +433,14 @@ class Handlers
 				const cocoShyBody = oSession.GetResponseBodyAsString().replace(cocoRegex, 'coconutshy_v6.swf?lang=$1');
 				oSession.utilSetResponseBody(cocoShyBody);
 			}
+
 			//fixes shockwave games
 			if (oSession.uriContains("play_shockwave.phtml") && oSession.GetResponseBodyAsString().Contains("game_container")) {
-				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('document.write', 'console.log').Replace("swRestart='false'", "swRestart='true'").Replace("swContextMenu='false'", "swContextMenu='true'"));		
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('document.write', 'console.log').Replace("swRestart='false'", "swRestart='true'").Replace("swContextMenu='false'", "swContextMenu='true'"));
 			}
 			//fixes neohome v2
 			if (oSession.uriContains("neohome/property/")) {
-				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('services.neopets', 'www.neopets').Replace("http%3A", "https%3A"));						
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('services.neopets', 'www.neopets').Replace("http%3A", "https%3A"));
 			}
 			//fixes 3dvia games like Terror Mountain Tilt
 			if (oSession.uriContains("play_flash.phtml") && oSession.GetResponseBodyAsString().Contains("virtools.download.akamai.com")) {
@@ -387,21 +452,21 @@ class Handlers
 		}
 	}
 
-/*
-	// This function executes just before Fiddler Classic returns an error that it has
-	// itself generated (e.g. "DNS Lookup failure") to the client application.
-	// These responses will not run through the OnBeforeResponse function above.
-	static function OnReturningError(oSession: Session) {
-	}
-*/
-/*
-	// This function executes after Fiddler Classic finishes processing a Session, regardless
-	// of whether it succeeded or failed. Note that this typically runs AFTER the last
-	// update of the Web Sessions UI listitem, so you must manually refresh the Session's
-	// UI if you intend to change it.
-	static function OnDone(oSession: Session) {
-	}
-*/
+	/*
+		// This function executes just before Fiddler Classic returns an error that it has
+		// itself generated (e.g. "DNS Lookup failure") to the client application.
+		// These responses will not run through the OnBeforeResponse function above.
+		static function OnReturningError(oSession: Session) {
+		}
+	*/
+	/*
+		// This function executes after Fiddler Classic finishes processing a Session, regardless
+		// of whether it succeeded or failed. Note that this typically runs AFTER the last
+		// update of the Web Sessions UI listitem, so you must manually refresh the Session's
+		// UI if you intend to change it.
+		static function OnDone(oSession: Session) {
+		}
+	*/
 
 	/*
 	static function OnBoot() {
@@ -449,10 +514,10 @@ class Handlers
 		// UI.lvSessions.AddBoundColumn("Server", 50, "@response.server");
 
 		// Uncomment to add a global hotkey (Win+G) that invokes the ExecAction method below...
-		// UI.RegisterCustomHotkey(HotkeyModifiers.Windows, Keys.G, "screenshot"); 
+		// UI.RegisterCustomHotkey(HotkeyModifiers.Windows, Keys.G, "screenshot");
 	}
 
-	// These static variables are used for simple breakpointing & other QuickExec rules 
+	// These static variables are used for simple breakpointing & other QuickExec rules
 	BindPref("fiddlerscript.ephemeral.bpRequestURI")
 	public static var bpRequestURI:String = null;
 
@@ -477,114 +542,114 @@ class Handlers
 
 		var sAction = sParams[0].toLowerCase();
 		switch (sAction) {
-		case "bold":
-			if (sParams.Length<2) {uiBoldURI=null; FiddlerObject.StatusText="Bolding cleared"; return false;}
-			uiBoldURI = sParams[1]; FiddlerObject.StatusText="Bolding requests for " + uiBoldURI;
-			return true;
-		case "bp":
-			FiddlerObject.alert("bpu = breakpoint request for uri\nbpm = breakpoint request method\nbps=breakpoint response status\nbpafter = breakpoint response for URI");
-			return true;
-		case "bps":
-			if (sParams.Length<2) {bpStatus=-1; FiddlerObject.StatusText="Response Status breakpoint cleared"; return false;}
-			bpStatus = parseInt(sParams[1]); FiddlerObject.StatusText="Response status breakpoint for " + sParams[1];
-			return true;
-		case "bpv":
-		case "bpm":
-			if (sParams.Length<2) {bpMethod=null; FiddlerObject.StatusText="Request Method breakpoint cleared"; return false;}
-			bpMethod = sParams[1].toUpperCase(); FiddlerObject.StatusText="Request Method breakpoint for " + bpMethod;
-			return true;
-		case "bpu":
-			if (sParams.Length<2) {bpRequestURI=null; FiddlerObject.StatusText="RequestURI breakpoint cleared"; return false;}
-			bpRequestURI = sParams[1]; 
-			FiddlerObject.StatusText="RequestURI breakpoint for "+sParams[1];
-			return true;
-		case "bpa":
-		case "bpafter":
-			if (sParams.Length<2) {bpResponseURI=null; FiddlerObject.StatusText="ResponseURI breakpoint cleared"; return false;}
-			bpResponseURI = sParams[1]; 
-			FiddlerObject.StatusText="ResponseURI breakpoint for "+sParams[1];
-			return true;
-		case "overridehost":
-			if (sParams.Length<3) {gs_OverridenHost=null; FiddlerObject.StatusText="Host Override cleared"; return false;}
-			gs_OverridenHost = sParams[1].toLowerCase();
-			gs_OverrideHostWith = sParams[2];
-			FiddlerObject.StatusText="Connecting to [" + gs_OverrideHostWith + "] for requests to [" + gs_OverridenHost + "]";
-			return true;
-		case "urlreplace":
-			if (sParams.Length<3) {gs_ReplaceToken=null; FiddlerObject.StatusText="URL Replacement cleared"; return false;}
-			gs_ReplaceToken = sParams[1];
-			gs_ReplaceTokenWith = sParams[2].Replace(" ", "%20");  // Simple helper
-			FiddlerObject.StatusText="Replacing [" + gs_ReplaceToken + "] in URIs with [" + gs_ReplaceTokenWith + "]";
-			return true;
-		case "allbut":
-		case "keeponly":
-			if (sParams.Length<2) { FiddlerObject.StatusText="Please specify Content-Type to retain during wipe."; return false;}
-			UI.actSelectSessionsWithResponseHeaderValue("Content-Type", sParams[1]);
-			UI.actRemoveUnselectedSessions();
-			UI.lvSessions.SelectedItems.Clear();
-			FiddlerObject.StatusText="Removed all but Content-Type: " + sParams[1];
-			return true;
-		case "stop":
-			UI.actDetachProxy();
-			return true;
-		case "start":
-			UI.actAttachProxy();
-			return true;
-		case "cls":
-		case "clear":
-			UI.actRemoveAllSessions();
-			return true;
-		case "g":
-		case "go":
-			UI.actResumeAllSessions();
-			return true;
-		case "goto":
-			if (sParams.Length != 2) return false;
-			Utilities.LaunchHyperlink("http://www.google.com/search?hl=en&btnI=I%27m+Feeling+Lucky&q=" + Utilities.UrlEncode(sParams[1]));
-			return true;
-		case "help":
-			Utilities.LaunchHyperlink("http://fiddler2.com/r/?quickexec");
-			return true;
-		case "hide":
-			UI.actMinimizeToTray();
-			return true;
-		case "log":
-			FiddlerApplication.Log.LogString((sParams.Length<2) ? "User couldn't think of anything to say..." : sParams[1]);
-			return true;
-		case "nuke":
-			UI.actClearWinINETCache();
-			UI.actClearWinINETCookies(); 
-			return true;
-		case "screenshot":
-			UI.actCaptureScreenshot(false);
-			return true;
-		case "show":
-			UI.actRestoreWindow();
-			return true;
-		case "tail":
-			if (sParams.Length<2) { FiddlerObject.StatusText="Please specify # of sessions to trim the session list to."; return false;}
-			UI.TrimSessionList(int.Parse(sParams[1]));
-			return true;
-		case "quit":
-			UI.actExit();
-			return true;
-		case "dump":
-			UI.actSelectAll();
-			UI.actSaveSessionsToZip(CONFIG.GetPath("Captures") + "dump.saz");
-			UI.actRemoveAllSessions();
-			FiddlerObject.StatusText = "Dumped all sessions to " + CONFIG.GetPath("Captures") + "dump.saz";
-			return true;
-
-		default:
-			if (sAction.StartsWith("http") || sAction.StartsWith("www.")) {
-				System.Diagnostics.Process.Start(sParams[0]);
+			case "bold":
+				if (sParams.Length<2) {uiBoldURI=null; FiddlerObject.StatusText="Bolding cleared"; return false;}
+				uiBoldURI = sParams[1]; FiddlerObject.StatusText="Bolding requests for " + uiBoldURI;
 				return true;
-			}
-			else
-			{
-				FiddlerObject.StatusText = "Requested ExecAction: '" + sAction + "' not found. Type HELP to learn more.";
-				return false;
-			}
+			case "bp":
+				FiddlerObject.alert("bpu = breakpoint request for uri\nbpm = breakpoint request method\nbps=breakpoint response status\nbpafter = breakpoint response for URI");
+				return true;
+			case "bps":
+				if (sParams.Length<2) {bpStatus=-1; FiddlerObject.StatusText="Response Status breakpoint cleared"; return false;}
+				bpStatus = parseInt(sParams[1]); FiddlerObject.StatusText="Response status breakpoint for " + sParams[1];
+				return true;
+			case "bpv":
+			case "bpm":
+				if (sParams.Length<2) {bpMethod=null; FiddlerObject.StatusText="Request Method breakpoint cleared"; return false;}
+				bpMethod = sParams[1].toUpperCase(); FiddlerObject.StatusText="Request Method breakpoint for " + bpMethod;
+				return true;
+			case "bpu":
+				if (sParams.Length<2) {bpRequestURI=null; FiddlerObject.StatusText="RequestURI breakpoint cleared"; return false;}
+				bpRequestURI = sParams[1];
+				FiddlerObject.StatusText="RequestURI breakpoint for "+sParams[1];
+				return true;
+			case "bpa":
+			case "bpafter":
+				if (sParams.Length<2) {bpResponseURI=null; FiddlerObject.StatusText="ResponseURI breakpoint cleared"; return false;}
+				bpResponseURI = sParams[1];
+				FiddlerObject.StatusText="ResponseURI breakpoint for "+sParams[1];
+				return true;
+			case "overridehost":
+				if (sParams.Length<3) {gs_OverridenHost=null; FiddlerObject.StatusText="Host Override cleared"; return false;}
+				gs_OverridenHost = sParams[1].toLowerCase();
+				gs_OverrideHostWith = sParams[2];
+				FiddlerObject.StatusText="Connecting to [" + gs_OverrideHostWith + "] for requests to [" + gs_OverridenHost + "]";
+				return true;
+			case "urlreplace":
+				if (sParams.Length<3) {gs_ReplaceToken=null; FiddlerObject.StatusText="URL Replacement cleared"; return false;}
+				gs_ReplaceToken = sParams[1];
+				gs_ReplaceTokenWith = sParams[2].Replace(" ", "%20");  // Simple helper
+				FiddlerObject.StatusText="Replacing [" + gs_ReplaceToken + "] in URIs with [" + gs_ReplaceTokenWith + "]";
+				return true;
+			case "allbut":
+			case "keeponly":
+				if (sParams.Length<2) { FiddlerObject.StatusText="Please specify Content-Type to retain during wipe."; return false;}
+				UI.actSelectSessionsWithResponseHeaderValue("Content-Type", sParams[1]);
+				UI.actRemoveUnselectedSessions();
+				UI.lvSessions.SelectedItems.Clear();
+				FiddlerObject.StatusText="Removed all but Content-Type: " + sParams[1];
+				return true;
+			case "stop":
+				UI.actDetachProxy();
+				return true;
+			case "start":
+				UI.actAttachProxy();
+				return true;
+			case "cls":
+			case "clear":
+				UI.actRemoveAllSessions();
+				return true;
+			case "g":
+			case "go":
+				UI.actResumeAllSessions();
+				return true;
+			case "goto":
+				if (sParams.Length != 2) return false;
+				Utilities.LaunchHyperlink("http://www.google.com/search?hl=en&btnI=I%27m+Feeling+Lucky&q=" + Utilities.UrlEncode(sParams[1]));
+				return true;
+			case "help":
+				Utilities.LaunchHyperlink("http://fiddler2.com/r/?quickexec");
+				return true;
+			case "hide":
+				UI.actMinimizeToTray();
+				return true;
+			case "log":
+				FiddlerApplication.Log.LogString((sParams.Length<2) ? "User couldn't think of anything to say..." : sParams[1]);
+				return true;
+			case "nuke":
+				UI.actClearWinINETCache();
+				UI.actClearWinINETCookies();
+				return true;
+			case "screenshot":
+				UI.actCaptureScreenshot(false);
+				return true;
+			case "show":
+				UI.actRestoreWindow();
+				return true;
+			case "tail":
+				if (sParams.Length<2) { FiddlerObject.StatusText="Please specify # of sessions to trim the session list to."; return false;}
+				UI.TrimSessionList(int.Parse(sParams[1]));
+				return true;
+			case "quit":
+				UI.actExit();
+				return true;
+			case "dump":
+				UI.actSelectAll();
+				UI.actSaveSessionsToZip(CONFIG.GetPath("Captures") + "dump.saz");
+				UI.actRemoveAllSessions();
+				FiddlerObject.StatusText = "Dumped all sessions to " + CONFIG.GetPath("Captures") + "dump.saz";
+				return true;
+
+			default:
+				if (sAction.StartsWith("http") || sAction.StartsWith("www.")) {
+					System.Diagnostics.Process.Start(sParams[0]);
+					return true;
+				}
+				else
+				{
+					FiddlerObject.StatusText = "Requested ExecAction: '" + sAction + "' not found. Type HELP to learn more.";
+					return false;
+				}
 		}
 	}
 }
