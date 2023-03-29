@@ -9,12 +9,12 @@ If you encounter a language/game combo that doesn't work, you should hear a 'Din
 
 The options to control this are in Rules->Advanced.
 - "Use Neopets Translations" will make it load translations from Neopets (the old way)
-- "Auto Upload Translations" this will upload the translations automatically as you play the games.
-- "Has Neopets Premium." - This option disabled the "Cannot load player config" fix, because Premium members aren't affected by it. Only enable this if you have Premium!
+- "Auto Upload Translations" this will upload the translations automatically as you play the games. (So you can help complete the Database!)
+- "Has Neopets Premium." - This option disables the "Cannot load player config" fix, because Premium members aren't affected by it. Only enable this if you have Premium!
 
 **We need people from different languages to use the *Auto Upload Translations* option!**
 
-We believe we have all of the English language games mirrored, so if you're on English, you don't have to do anything!
+We believe we have all the English language translations mirrored, so if you're on English, you don't have to do anything!
 
 Note: There is also an option in Rules->Advanced->
 
