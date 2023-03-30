@@ -1,6 +1,9 @@
 # Play Flash, Shockwave, and 3dvia Neopets games on Windows 10 and Windows 11! Works in 2022 / 2023
 
 ## 2023-03-29: README FIRST! Important Update - Translation Mirror!
+
+*tl;dr: If you have Neopets premium, and especially are using a non-english language for the games, please enable all 3 "Advanced" options in the Rules toolbar.*
+
 We are pleased to give you an amazing new feature! This will prevent Stackpath from interfering with your game loading. No more "undefined" instead of the game text!
 
 The way this works is, it redirects the request for the translations to a mirror, which will never respond with a stack path interruption!
