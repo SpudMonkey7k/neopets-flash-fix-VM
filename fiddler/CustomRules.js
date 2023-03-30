@@ -193,7 +193,12 @@ class Handlers
 				oSession.host = "www.neofixes.com";
 			}
 		}
-
+		// Fix long delay/lag/errors from the ShockWave/Flash phone-home
+		if (oSession.uriContains("pinger.macromedia.com")) {
+			oSession.utilCreateResponseAndBypassServer();
+			oSession.responseCode = '204';
+			oSession["ui-backcolor"] = "Lavender";
+		}
 
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
