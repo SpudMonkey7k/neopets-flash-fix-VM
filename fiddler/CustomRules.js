@@ -144,13 +144,13 @@ class Handlers
 	var m_UploadTranslations: boolean = false;
 
 	public static RulesOption("Disabled", "Shock&wave Tweaks", true)
-	BindPref('fiddlerscript.rules.neo.swdisabled')
+	BindPref('fiddlerscript.rules.neo.sw_disabled')
 	var m_swDisabled: boolean = false;
 
 	public static RulesOption("-", "Shock&wave Tweaks", true)
 	var m_Dummy: boolean = false;
 
-	public static RulesOption("Don't Fake Reply", "Shock&wave Tweaks", true)
+	public static RulesOption("Don't Fake Reply", "Shock&wave Tweaks")
 	BindPref('fiddlerscript.rules.neo.sw_noreply')
 	var m_swNoReply: boolean = false;
 
