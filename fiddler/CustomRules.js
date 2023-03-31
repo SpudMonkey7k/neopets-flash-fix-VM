@@ -131,6 +131,17 @@ class Handlers
 	BindPref('fiddlerscript.rules.neo.sw_optional2')
 	var m_swOptional2: boolean = false;
 
+	public static RulesOption("Disabled", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.sw_disabled')
+	var m_swDisabled: boolean = false;
+
+	public static RulesOption("-", "Shock&wave Tweaks", true)
+	var m_Dummy: boolean = false;
+
+	public static RulesOption("Don't Fake Reply", "Shock&wave Tweaks")
+	BindPref('fiddlerscript.rules.neo.sw_noreply')
+	var m_swNoReply: boolean = false;
+
 	public static RulesOption("Has Neopets &Premium", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.has_premium")
 	var m_HasNeopetsPremium: boolean = false;
@@ -142,17 +153,6 @@ class Handlers
 	public static RulesOption("&Upload Translations", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.upload_trans")
 	var m_UploadTranslations: boolean = false;
-
-	public static RulesOption("Disabled", "Shock&wave Tweaks", true)
-	BindPref('fiddlerscript.rules.neo.sw_disabled')
-	var m_swDisabled: boolean = false;
-
-	public static RulesOption("-", "Shock&wave Tweaks", true)
-	var m_Dummy: boolean = false;
-
-	public static RulesOption("Don't Fake Reply", "Shock&wave Tweaks")
-	BindPref('fiddlerscript.rules.neo.sw_noreply')
-	var m_swNoReply: boolean = false;
 
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
