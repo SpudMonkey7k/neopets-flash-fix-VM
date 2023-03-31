@@ -76,14 +76,6 @@ class Handlers
 	}
 	*/
 
-	public static RulesOption("Hide 304s")
-	BindPref("fiddlerscript.rules.Hide304s")
-	var m_Hide304s: boolean = false;
-
-	// Cause Fiddler Classic to override the Accept-Language header with one of the defined values
-	public static RulesOption("Request &Japanese Content")
-	var m_Japanese: boolean = false;
-
 	// Cause Fiddler Classic to override the User-Agent header with one of the defined values
 	// The page http://browserscope2.org/browse?category=selectors&ua=Mobile%20Safari is a good place to find updated versions of these
 	RulesString("&User-Agents", true)
@@ -126,6 +118,18 @@ class Handlers
 
 	public static RulesOption("Cache Always &Fresh", "Per&formance")
 	var m_AlwaysFresh: boolean = false;
+
+	public static RulesOption("Default", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.sw_default')
+	var m_swDefault: boolean = true;
+
+	public static RulesOption("Alternate", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.sw_optional1')
+	var m_swOptional1: boolean = false;
+
+	public static RulesOption("Last Resort", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.sw_optional2')
+	var m_swOptional2: boolean = false;
 
 	public static RulesOption("Has Neopets &Premium", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.has_premium")
@@ -199,29 +203,51 @@ class Handlers
 			oSession.responseCode = '204';
 			oSession["ui-backcolor"] = "Lavender";
 		}
-		// More shockwave fixes
-		if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
-			if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
-			if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
-			if (oSession.uriContains('g430_v26_34232.dcr')) {
-				// Castle battles shows it's loaded before it's ready, so speed it up.
-				oSession["request-trickle-delay"] = "1";
-				oSession["response-trickle-delay"] = "1";
-			} else if (oSession.uriContains('g386_v8')) {
-				// Attack of the slorgs is particularly finnicky
-				oSession["request-trickle-delay"] = "2";
-				oSession["response-trickle-delay"] = "2";
-			} else {
-				oSession["request-trickle-delay"] = "10";
-				oSession["response-trickle-delay"] = "20";
-			}
-			oSession["ui-backcolor"] = "Lavender";
+	// More shockwave fixes
+	if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
+		var uDelayDice = '2'; var dDelayDice = '2';
+		var uDelayCastle = '1'; var dDelayCastle = '1';
+		var uDelaySlorgs = '2'; var dDelaySlorgs = '2';
+		var uDelayDefault = '10'; var dDelayDefault = '20';
+		var uDelayDGS = '40'; var dDelayDGS = '100';
+		if (m_swOptional1) {
+			uDelayDice = '5'; dDelayDice = '10';
+			uDelayCastle = '2'; dDelayCastle = '2';
+			uDelaySlorgs = '5'; dDelaySlorgs = '10';
+			uDelayDefault = '20'; dDelayDefault = '50';
+			uDelayDGS = '20'; dDelayDGS = '50';
+		} else if (m_swOptional2) {
+			uDelayDice = '1'; dDelayDice = '1';
+			uDelayCastle = '1'; dDelayCastle = '1';
+			uDelaySlorgs = '5'; dDelaySlorgs = '5';
+			uDelayDefault = '5'; dDelayDefault = '10';
+			uDelayDGS = '2'; dDelayDGS = '5';
+		}
+		if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
+		if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
+		if (oSession.uriContains('g356_v18_30330.dcr')) {
+			// Dice escape
+			oSession["request-trickle-delay"] = dDelayDice;
+			oSession["response-trickle-delay"] = dDelayDice;
+		} else if (oSession.uriContains('g430_v26_34232.dcr')) {
+			// Castle battles shows it's loaded before it's ready, so speed it up.
+			oSession["request-trickle-delay"] = uDelayCastle;
+			oSession["response-trickle-delay"] = dDelayCastle;
+		} else if (oSession.uriContains('g386_v8')) {
+			// Attack of the slorgs is particularly finnicky
+			oSession["request-trickle-delay"] = uDelaySlorgs;
+			oSession["response-trickle-delay"] = dDelaySlorgs;
+		} else {
+			oSession["request-trickle-delay"] = uDelayDefault;
+			oSession["response-trickle-delay"] = dDelayDefault;
+		}
+		oSession["ui-backcolor"] = "Lavender";
 
 		}
 		if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
 			// This is also for attack of the slorgs.
-			oSession["request-trickle-delay"] = "40";
-			oSession["response-trickle-delay"] = "100";
+			oSession["request-trickle-delay"] = uDelayDGS;
+			oSession["response-trickle-delay"] = dDelayDGS;
 			oSession["ui-backcolor"] = "Lavender";
 		}
 		// End batch of shockwave fixes
@@ -292,10 +318,6 @@ class Handlers
 		// User-Agent Overrides
 		if (null != sUA) {
 			oSession.oRequest["User-Agent"] = sUA;
-		}
-
-		if (m_Japanese) {
-			oSession.oRequest["Accept-Language"] = "ja";
 		}
 
 		if (m_AlwaysFresh && (oSession.oRequest.headers.Exists("If-Modified-Since") || oSession.oRequest.headers.Exists("If-None-Match")))
@@ -369,9 +391,6 @@ class Handlers
 	}
 
 	static function OnBeforeResponse(oSession: Session) {
-		if (m_Hide304s && oSession.responseCode == 304) {
-			oSession["ui-hide"] = "true";
-		}
 		if (oSession.uriContains('dgs_get_game_data.phtml')) {
 			oSession.oResponse.headers.Remove('x-sp-metadata');
 			oSession.oResponse.headers.Remove('X-HW');
