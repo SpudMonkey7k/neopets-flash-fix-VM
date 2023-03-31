@@ -402,7 +402,10 @@ class Handlers
 				}
 
 			}
-
+			// Shockwave fix. Works with the code in onBeforeRequest
+			if (oSession.uriContains('play_shockwave.phtml')) {
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
+			}
 			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
 			if (!m_HasNeopetsPremium && oSession.uriContains('play_flash.phtml')) {
 				const hiddenMatch = '</body>';
