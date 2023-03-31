@@ -200,7 +200,7 @@ class Handlers
 			oSession["ui-backcolor"] = "Lavender";
 		}
 		// More shockwave fixes
-		if (oSession.uriContains('.dcr')) {
+	if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
 			if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
 			if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
 			if (oSession.uriContains('g386_v8')) {
@@ -413,10 +413,6 @@ class Handlers
 				}
 
 			}
-			// Shockwave fix. Works with the code in onBeforeRequest
-			if (oSession.uriContains('play_shockwave.phtml')) {
-				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
-			}
 			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
 			if (!m_HasNeopetsPremium && oSession.uriContains('play_flash.phtml')) {
 				const hiddenMatch = '</body>';
@@ -439,7 +435,11 @@ class Handlers
 				oSession.oResponse.headers['Pragma'] = 'no-cache';
 				oSession.oResponse.headers['Expires'] = '0';
 			}
-
+			// Lost desert might be less buggy? Faerieland seems to work ok, too
+			if (oSession.uriContains('dgs_get_game_data.phtml')) {
+				var preloaderRegex = /p=[^&]*&/;
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().replace(preloaderRegex, 'p=ml_lost_desert&'));
+			}
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
 				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
