@@ -203,13 +203,24 @@ class Handlers
 		if (oSession.uriContains('.dcr')) {
 			if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
 			if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
-			// Delay sends by 300ms per KB uploaded.
-			oSession["request-trickle-delay"] = "10";
-			// Delay receives by 150ms per KB downloaded.
-			oSession["response-trickle-delay"] = "20";
+			if (oSession.uriContains('g386_v8')) {
+				// Attack of the slorgs is particularly finnicky
+				oSession["request-trickle-delay"] = "5";
+				oSession["response-trickle-delay"] = "5";
+			} else {
+				oSession["request-trickle-delay"] = "10";
+				oSession["response-trickle-delay"] = "20";
+			}
 			oSession["ui-backcolor"] = "Lavender";
 
 		}
+		if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
+			// This is also for attack of the slorgs.
+			oSession["request-trickle-delay"] = "40";
+			oSession["response-trickle-delay"] = "100";
+			oSession["ui-backcolor"] = "Lavender";
+		}
+		// End batch of shockwave fixes
 
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
@@ -419,6 +430,16 @@ class Handlers
 				if (adFixerBody != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
 
 			}
+			// Shockwave fix. Works with the code in onBeforeRequest
+			if (oSession.uriContains('play_shockwave.phtml')) {
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
+			}
+			if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
+				oSession.oResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+				oSession.oResponse.headers['Pragma'] = 'no-cache';
+				oSession.oResponse.headers['Expires'] = '0';
+			}
+
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
 				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
