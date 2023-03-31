@@ -200,13 +200,17 @@ class Handlers
 			oSession["ui-backcolor"] = "Lavender";
 		}
 		// More shockwave fixes
-	if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
+		if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
 			if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
 			if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
-			if (oSession.uriContains('g386_v8')) {
+			if (oSession.uriContains('g430_v26_34232.dcr')) {
+				// Castle battles shows it's loaded before it's ready, so speed it up.
+				oSession["request-trickle-delay"] = "1";
+				oSession["response-trickle-delay"] = "1";
+			} else if (oSession.uriContains('g386_v8')) {
 				// Attack of the slorgs is particularly finnicky
-				oSession["request-trickle-delay"] = "5";
-				oSession["response-trickle-delay"] = "5";
+				oSession["request-trickle-delay"] = "2";
+				oSession["response-trickle-delay"] = "2";
 			} else {
 				oSession["request-trickle-delay"] = "10";
 				oSession["response-trickle-delay"] = "20";
