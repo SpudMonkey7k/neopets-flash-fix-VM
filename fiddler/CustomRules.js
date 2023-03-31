@@ -199,6 +199,17 @@ class Handlers
 			oSession.responseCode = '204';
 			oSession["ui-backcolor"] = "Lavender";
 		}
+		// More shockwave fixes
+		if (oSession.uriContains('.dcr')) {
+			if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
+			if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
+			// Delay sends by 300ms per KB uploaded.
+			oSession["request-trickle-delay"] = "10";
+			// Delay receives by 150ms per KB downloaded.
+			oSession["response-trickle-delay"] = "20";
+			oSession["ui-backcolor"] = "Lavender";
+
+		}
 
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
