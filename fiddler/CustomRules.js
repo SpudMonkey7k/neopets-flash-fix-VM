@@ -143,6 +143,17 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.upload_trans")
 	var m_UploadTranslations: boolean = false;
 
+	public static RulesOption("Disabled", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.swdisabled')
+	var m_swDisabled: boolean = false;
+
+	public static RulesOption("-", "Shock&wave Tweaks", true)
+	var m_Dummy: boolean = false;
+
+	public static RulesOption("Don't Fake Reply", "Shock&wave Tweaks", true)
+	BindPref('fiddlerscript.rules.neo.sw_noreply')
+	var m_swNoReply: boolean = false;
+
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
 	public static ToolsAction("Reset Script")
@@ -198,57 +209,74 @@ class Handlers
 			}
 		}
 		// Fix long delay/lag/errors from the ShockWave/Flash phone-home
-		if (oSession.uriContains("pinger.macromedia.com")) {
+		if (!m_swNoReply && oSession.uriContains("pinger.macromedia.com")) {
 			oSession.utilCreateResponseAndBypassServer();
 			oSession.responseCode = '204';
 			oSession["ui-backcolor"] = "Lavender";
 		}
-	// More shockwave fixes
-	if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
-		var uDelayDice = '2'; var dDelayDice = '2';
-		var uDelayCastle = '1'; var dDelayCastle = '1';
-		var uDelaySlorgs = '2'; var dDelaySlorgs = '2';
-		var uDelayDefault = '10'; var dDelayDefault = '20';
-		var uDelayDGS = '40'; var dDelayDGS = '100';
-		if (m_swOptional1) {
-			uDelayDice = '5'; dDelayDice = '10';
-			uDelayCastle = '2'; dDelayCastle = '2';
-			uDelaySlorgs = '5'; dDelaySlorgs = '10';
-			uDelayDefault = '20'; dDelayDefault = '50';
-			uDelayDGS = '20'; dDelayDGS = '50';
-		} else if (m_swOptional2) {
-			uDelayDice = '1'; dDelayDice = '1';
-			uDelayCastle = '1'; dDelayCastle = '1';
-			uDelaySlorgs = '5'; dDelaySlorgs = '5';
-			uDelayDefault = '5'; dDelayDefault = '10';
-			uDelayDGS = '2'; dDelayDGS = '5';
-		}
-		if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
-		if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
-		if (oSession.uriContains('g356_v18_30330.dcr')) {
-			// Dice escape
-			oSession["request-trickle-delay"] = dDelayDice;
-			oSession["response-trickle-delay"] = dDelayDice;
-		} else if (oSession.uriContains('g430_v26_34232.dcr')) {
-			// Castle battles shows it's loaded before it's ready, so speed it up.
-			oSession["request-trickle-delay"] = uDelayCastle;
-			oSession["response-trickle-delay"] = dDelayCastle;
-		} else if (oSession.uriContains('g386_v8')) {
-			// Attack of the slorgs is particularly finnicky
-			oSession["request-trickle-delay"] = uDelaySlorgs;
-			oSession["response-trickle-delay"] = dDelaySlorgs;
-		} else {
-			oSession["request-trickle-delay"] = uDelayDefault;
-			oSession["response-trickle-delay"] = dDelayDefault;
-		}
-		oSession["ui-backcolor"] = "Lavender";
+		if (!m_swDisabled) {
+			// More shockwave fixes
+			if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
+				var uDelayDice = '2';
+				var dDelayDice = '2';
+				var uDelayCastle = '1';
+				var dDelayCastle = '1';
+				var uDelaySlorgs = '2';
+				var dDelaySlorgs = '2';
+				var uDelayDefault = '10';
+				var dDelayDefault = '20';
+				var uDelayDGS = '40';
+				var dDelayDGS = '100';
+				if (m_swOptional1) {
+					uDelayDice = '5';
+					dDelayDice = '10';
+					uDelayCastle = '2';
+					dDelayCastle = '2';
+					uDelaySlorgs = '5';
+					dDelaySlorgs = '10';
+					uDelayDefault = '20';
+					dDelayDefault = '50';
+					uDelayDGS = '20';
+					dDelayDGS = '50';
+				} else if (m_swOptional2) {
+					uDelayDice = '1';
+					dDelayDice = '1';
+					uDelayCastle = '1';
+					dDelayCastle = '1';
+					uDelaySlorgs = '5';
+					dDelaySlorgs = '5';
+					uDelayDefault = '5';
+					dDelayDefault = '10';
+					uDelayDGS = '2';
+					dDelayDGS = '5';
+				}
+				if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
+				if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
+				if (oSession.uriContains('g356_v18_30330.dcr')) {
+					// Dice escape
+					oSession["request-trickle-delay"] = dDelayDice;
+					oSession["response-trickle-delay"] = dDelayDice;
+				} else if (oSession.uriContains('g430_v26_34232.dcr')) {
+					// Castle battles shows it's loaded before it's ready, so speed it up.
+					oSession["request-trickle-delay"] = uDelayCastle;
+					oSession["response-trickle-delay"] = dDelayCastle;
+				} else if (oSession.uriContains('g386_v8')) {
+					// Attack of the slorgs is particularly finnicky
+					oSession["request-trickle-delay"] = uDelaySlorgs;
+					oSession["response-trickle-delay"] = dDelaySlorgs;
+				} else {
+					oSession["request-trickle-delay"] = uDelayDefault;
+					oSession["response-trickle-delay"] = dDelayDefault;
+				}
+				oSession["ui-backcolor"] = "Lavender";
 
-		}
-		if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
-			// This is also for attack of the slorgs.
-			oSession["request-trickle-delay"] = uDelayDGS;
-			oSession["response-trickle-delay"] = dDelayDGS;
-			oSession["ui-backcolor"] = "Lavender";
+			}
+			if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
+				// This is also for attack of the slorgs.
+				oSession["request-trickle-delay"] = uDelayDGS;
+				oSession["response-trickle-delay"] = dDelayDGS;
+				oSession["ui-backcolor"] = "Lavender";
+			}
 		}
 		// End batch of shockwave fixes
 
@@ -449,19 +477,21 @@ class Handlers
 				if (adFixerBody != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
 
 			}
-			// Shockwave fix. Works with the code in onBeforeRequest
-			if (oSession.uriContains('play_shockwave.phtml')) {
-				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
-			}
-			if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
-				oSession.oResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
-				oSession.oResponse.headers['Pragma'] = 'no-cache';
-				oSession.oResponse.headers['Expires'] = '0';
-			}
-			// Lost desert might be less buggy? Faerieland seems to work ok, too
-			if (oSession.uriContains('dgs_get_game_data.phtml')) {
-				var preloaderRegex = /p=[^&]*&/;
-				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().replace(preloaderRegex, 'p=ml_lost_desert&'));
+			if (!m_swDisabled) {
+				// Shockwave fixes
+				if (oSession.uriContains('play_shockwave.phtml')) {
+					oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
+				}
+				if (oSession.uriContains('http://swf.neopets.com/games/gaming_system/dgs_include_v2.swf')) {
+					oSession.oResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+					oSession.oResponse.headers['Pragma'] = 'no-cache';
+					oSession.oResponse.headers['Expires'] = '0';
+				}
+				// Lost desert might be less buggy? Faerieland seems to work ok, too
+				if (oSession.uriContains('dgs_get_game_data.phtml')) {
+					var preloaderRegex = /p=[^&]*&/;
+					oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().replace(preloaderRegex, 'p=ml_lost_desert&'));
+				}
 			}
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
