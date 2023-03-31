@@ -3,6 +3,9 @@
 ### Important: We are now logging important updates [here](UPDATES.md).
 Please check it out as the information there is very important.
 
+## Important: Do not give your Fiddler session data to ANYONE.
+This contains your login cookies! If you do seek help from anyone, including myself, always logout which will invalidate your session cookie, and then log back in, to ensure that noone can use your cookies to login.
+
 ### Preface:
 This guide is confirmed to work on Windows 10 and 11. The steps SHOULD work on Windows 7/8, also, but some things might be different, like installation paths.
 
