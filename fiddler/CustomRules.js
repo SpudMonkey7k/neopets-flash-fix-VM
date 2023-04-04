@@ -442,6 +442,12 @@ class Handlers
 				if (adFixerBody != oSession.GetResponseBodyAsString()) oSession["ui-backcolor"] = "lime";
 
 			}
+			if (oSession.uriContains('game.phtml?game_id=877') || oSession.uriContains('game.phtml?game_id=925') || oSession.uriContains('game.phtml?game_id=926')) {
+				oSession["ui-backcolor"] = "lime";
+				var shenkuuBody = oSession.GetResponseBodyAsString();
+				shenkuuBody = shenkuuBody.Replace('playGame(); return', '$("#gr-ctp-main .play-btn, .ctp-ctp").off("click"); playGame(); return');
+				oSession.utilSetResponseBody(shenkuuBody);
+			}
 			if (!m_swDisabled) {
 				// Shockwave fixes
 				if (oSession.uriContains('play_shockwave.phtml')) {
