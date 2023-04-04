@@ -1,3 +1,7 @@
+## 2023-04-04 Update - 3dvia needs love, too!
+1. 3dvia games should now send full cookies -- This means the 'refresh' trick should work for sending your scores now.
+2. 3dvia games should no longer open in a new window AND the original page; this should prevent the hash from being regenerated invalidating one instances' ability to generate a valid score.
+
 ### 2023-03-31 Update:
 I have added several Shockwave Tweaks to make the Shockwave games much more reliable.
 These tweaks rely on the "**Bad Driver Bug**" *(Shown in the Shockwave setup section)* fix to be deployed, so if you haven't done this,
@@ -7,7 +11,7 @@ They are in "Rules->Shockwave Tweaks," so you can 'Disable', and "Don't Fake Rep
 
 The "Default" works best for me, with 90% chance to succeed on most games, only Attack of the Slorgs gives me the most trouble, sometimes that takes a couple browser restarts and/or reloads, but it's like 35% successfull instead of 1% successful.
 
-## 2023-03-29: README FIRST! Important Update - Translation Mirror!
+### 2023-03-29: README FIRST! Important Update - Translation Mirror!
 
 *tl;dr: If you have Neopets premium, and especially are using a non-english language for the games, please enable all 3 "Advanced" options in the Rules toolbar.*
 
