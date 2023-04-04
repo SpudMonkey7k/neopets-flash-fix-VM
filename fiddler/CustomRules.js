@@ -242,11 +242,14 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
-			if (oSession.HostnameIs("dev.neopets.com") || oSession.oRequest.headers.ExistsAndContains('User-Agent', 'Virtools Webserver Manager')) {
-				if (oSession.HostnameIs("dev.neopets.com"))
-				{
-					oSession.host = "www.neopets.com";
+			// Fix 3dvia games not sending score
+			if (oSession.uriContains('process_flash_score') && oSession.oRequest.headers.ExistsAndContains('User-Agent', 'Virtools Webserver Manager')) {
+				//try to fix cookies not sent to dev to bypass stackpath
+				if (saved_cookies != null) {
+					oSession.oRequest.headers["Cookie"] = saved_cookies;
 				}
+			} else if (oSession.HostnameIs("dev.neopets.com")) {
+				oSession.host = "www.neopets.com";
 				//try to fix cookies not sent to dev to bypass stackpath
 				if (saved_cookies != null) {
 					oSession.oRequest.headers["Cookie"] = saved_cookies;
