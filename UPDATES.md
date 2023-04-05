@@ -1,4 +1,13 @@
-## 2023-04-04 Update - 3dvia needs love, too!
+### 2023-04-05 Update - Block Microsoft Visual Studio Tracking
+Have  you ever been waiting for neo to load, only to see in the status bar, 'Waiting for dc.services.visualstudio.com...' ? 
+
+Well now you don't have to wait for Microsoft to respond anymore before the page loads! This has the effect of speeding up the site during times where the Microsoft server would lag.
+
+And it prevents your tracking data from going to Microsoft; win-win!
+
+To enable it, go to Fiddler->Rules->Performance->Skip MSVS Tracking (Faster)
+
+### 2023-04-04 Update - 3dvia needs love, too!
 1. 3dvia games should now send full cookies -- This means the 'refresh' trick should work for sending your scores now.
 2. 3dvia games should no longer open in a new window AND the original page; this should prevent the hash from being regenerated invalidating one instances' ability to generate a valid score.
 

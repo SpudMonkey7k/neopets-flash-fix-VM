@@ -119,6 +119,12 @@ class Handlers
 	public static RulesOption("Cache Always &Fresh", "Per&formance")
 	var m_AlwaysFresh: boolean = false;
 
+	public static RulesOption("-", "Per&formance")
+	var m_Dummy2: boolean = false;
+
+	public static RulesOption("Skip MSVS Tracking (Faster)", "Per&formance")
+	var m_skipVSTracking: boolean = false;
+
 	public static RulesOption("Enabled", "Shock&wave Tweaks", true)
 	BindPref('fiddlerscript.rules.neo.sw_default')
 	var m_swDefault: boolean = true;
@@ -205,6 +211,13 @@ class Handlers
 			oSession.utilCreateResponseAndBypassServer();
 			oSession.responseCode = '204';
 			oSession["ui-backcolor"] = "Lavender";
+		}
+		// Don't be tracked by Visual Studio. Also speeds the site up a lot.
+		if (m_skipVSTracking && oSession.uriContains('dc.services.visualstudio.com/v2/track')) {
+			oSession.utilCreateResponseAndBypassServer();
+			oSession.responseCode = '200';
+			oSession.utilSetResponseBody('{"itemsReceived":1,"itemsAccepted":1,"errors":[],"appId":"048e78a5-9e6f-49c1-b0c3-a4e8c7e7e4be"}');
+			oSession["ui-backcolor"] = "Pink";
 		}
 		if (!m_swDisabled) {
 			// More shockwave fixes
