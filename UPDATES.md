@@ -1,3 +1,18 @@
+## 2023-04-11 Security Update - Important:
+I was hoping this would never happen, but unfortunately through an oversight, your neo cookies were sent to my server, 
+including your login cookie. I have double-checked, and no cookies were ever saved, and they were always encrypted using SSL, 
+so there is nothing to worry about, **but I still recommend that you logout and log back in, which will invalidate your old login cookie**. 
+
+Sorry about this, I will make sure nothing like this happens again.
+
+Note: This only affects users who used a version of the CustomRules from between 2023-03-29 and 2023-04-11, and who had the Translation Mirror Enabled (Formerly "Use Neo Translations" option)
+
+The Translation Mirror is a backend service that I have developed that makes loading Flash+Shockwave games more reliable. Without this, there is a good chance that StackPath (Neopets - "Loading Site" messages that interrupt your activities) will block the Translation, and prevent the game from loading properly. ("Undefined" text and/or the inability to send scores)
+
+If you wish to disable the Translation Mirror, uncheck: Fiddler->Rules->Advanced->Use Translation Mirror.
+
+You can also look at the requests to 'neofixes.com' in the Fiddler log (left-pane) and verify that no private data is being sent to my server.
+
 ### 2023-04-05 Update - Block Microsoft Visual Studio Tracking
 Have  you ever been waiting for neo to load, only to see in the status bar, 'Waiting for dc.services.visualstudio.com...' ? 
 

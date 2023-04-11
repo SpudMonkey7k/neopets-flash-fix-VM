@@ -144,9 +144,9 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.has_premium")
 	var m_HasNeopetsPremium: boolean = false;
 
-	public static RulesOption("Use Neo Translations", "Ad&vanced")
-	BindPref("fiddlerscript.rules.adv.neo_trans")
-	var m_UseNeopetsTranslations: boolean = false;
+	public static RulesOption("Use Translation Mirror", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.trans_mirror")
+	var m_UseTranslationMirror: boolean = true;
 
 	public static RulesOption("&Upload Translations", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.upload_trans")
@@ -200,9 +200,10 @@ class Handlers
 			oSession["x-breakrequest"]="uri";
 		}
 		// Fixes stackpath interfering with game translation file loading by using a mirror:
-		if (!m_UseNeopetsTranslations && oSession.uriContains('/gettranslationxml.phtml')) {
+		if (m_UseTranslationMirror && oSession.uriContains('/gettranslationxml.phtml')) {
 			if (oSession.HTTPMethodIs("CONNECT") == false) {
 				oSession.oRequest.headers['X-NeoFixes'] = 'get-translation';
+				oSession.oRequest.headers.Remove('Cookie');
 				oSession.host = "www.neofixes.com";
 			}
 		}
@@ -411,7 +412,7 @@ class Handlers
 		}
 		if (oSession.host.Contains("neopets.com")) {
 			// Automatically upload translation:
-			if (m_UseNeopetsTranslations && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
+			if (!m_UseTranslationMirror && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
 				var uri = "POST https://www.neofixes.com/api/upload_translation.phtml HTTP/1.0";
 				var headers = ["Host: www.neofixes.com"];
 				var txData = oSession.GetRequestBodyAsString();
