@@ -487,7 +487,7 @@ class Handlers
 					if (respBody.Length < 30000 && respBody.Contains('<!doctype html> <html lang="en">')) {
 						if (oSession.HTTPMethodIs('GET')) {
 							// Just reload GET's so they don't lose the request URI
-							respBody.Replace('redirect("post")','redirect("reload")');
+							// respBody.Replace('redirect("post")','redirect("reload")');
 						} else if (oSession.HTTPMethodIs('POST')) {
 							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
 							var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
