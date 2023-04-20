@@ -503,7 +503,7 @@ class Handlers
 				}
 			}
 			// Re-enable multiple Gallery Upgrades by spam-clicking
-			if (oSession.uriContains('/gallery_desc_edit.phtml?type=edit')) {
+			if (oSession.uriContains('/gallery_desc_edit.phtml')) {
 				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('onSubmit="return one_submit();"', ''));
 			}
 			//fixes coconut shy
