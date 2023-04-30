@@ -260,6 +260,12 @@ class Handlers
 				oSession["ui-backcolor"] = "Lavender";
 
 			}
+			if (oSession.uriContains('games/DGS_BIOS.cct')) {
+				if (swGame != '') {
+					oSession["request-trickle-delay"] = '1';
+					oSession["response-trickle-delay"] = '1';
+				}
+			}
 			if (oSession.uriContains('gaming_system/dgs_include_v2.swf')) {
 				if (swGame == 'dice_escape') {
 					oSession["request-trickle-delay"] = '1';
@@ -488,7 +494,7 @@ class Handlers
 				if (oSession.uriContains('play_shockwave.phtml')) {
 					oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
 				}
-				if (oSession.uriContains('gaming_system/dgs_include_v2.swf')) {
+				if (oSession.uriContains('gaming_system/dgs_include_v2.swf') || oSession.uriContains('games/DGS_BIOS.cct')) {
 					oSession.oResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
 					oSession.oResponse.headers['Pragma'] = 'no-cache';
 					oSession.oResponse.headers['Expires'] = '0';
