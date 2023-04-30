@@ -168,6 +168,7 @@ class Handlers
 		UI.actUpdateInspector(true,true);
 	}
 
+	static var swGame = '';
 	static function OnBeforeRequest(oSession: Session) {
 		// Sample Rule: Color ASPX requests in RED
 		// if (oSession.uriContains(".aspx")) {	oSession["ui-color"] = "red";	}
@@ -225,18 +226,33 @@ class Handlers
 			if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
 				if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
 				if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
-				if (oSession.uriContains('g356_v18_30330.dcr')) {
+				if (oSession.uriContains('g356_v18_30330.dcr' || swGame == 'dice_escape')) {
 					// Dice escape
+					swGame = 'dice_escape';
 					oSession["request-trickle-delay"] = '2';
 					oSession["response-trickle-delay"] = '2';
 				} else if (oSession.uriContains('g430_v26_34232.dcr')) {
+					swGame = 'castle_battle';
 					// Castle battles shows it's loaded before it's ready, so speed it up.
 					oSession["request-trickle-delay"] = '1';
 					oSession["response-trickle-delay"] = '1';
 				} else if (oSession.uriContains('g386_v8')) {
+					swGame = 'slorgs';
 					// Attack of the slorgs is particularly finnicky
 					oSession["request-trickle-delay"] = '2';
 					oSession["response-trickle-delay"] = '2';
+				} else if (oSession.uriContains('g349_')) {
+					swGame = 'pirate_caves';
+					oSession["request-trickle-delay"] = '10';
+					oSession["response-trickle-delay"] = '20';
+				} else if (oSession.uriContains('g473_')) {
+					swGame = 'ice_caves';
+					oSession["request-trickle-delay"] = '10';
+					oSession["response-trickle-delay"] = '20';
+				} else if (oSession.uriContains('g480_')) {
+					swGame = 'trotrods';
+					oSession["request-trickle-delay"] = '10';
+					oSession["response-trickle-delay"] = '20';
 				} else {
 					oSession["request-trickle-delay"] = '10';
 					oSession["response-trickle-delay"] = '20';
@@ -245,9 +261,14 @@ class Handlers
 
 			}
 			if (oSession.uriContains('gaming_system/dgs_include_v2.swf')) {
-				// This is also for attack of the slorgs.
-				oSession["request-trickle-delay"] = '40';
-				oSession["response-trickle-delay"] = '100';
+				if (swGame == 'dice_escape') {
+					oSession["request-trickle-delay"] = '1';
+					oSession["response-trickle-delay"] = '2';
+				} else {
+					// This is also for attack of the slorgs.
+					oSession["request-trickle-delay"] = '40';
+					oSession["response-trickle-delay"] = '100';
+				}
 				oSession["ui-backcolor"] = "Lavender";
 			}
 		}
