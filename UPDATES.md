@@ -1,4 +1,25 @@
-## 2023-04-11 Security Update - Important:
+## 2023-05-05 - Easily re-submit failed game scores!
+The next best thing to removing the Stackpath problem!
+
+Now, if you send a score, and Stackpath interrupts it, (score fails to send for whatever reason), you can simply go to www.neopets.com/fixscore
+
+This will automatically resubmit the last failed score.
+
+Note: Successfully submiting any new game score will reset the cached score and it will be lost, so be sure to do it right away!
+
+(This cannot be used to send scores multiple times; it only works if Stackpath blocked it, not if it failed for another reason, like after nightly reset, or you had multiple copies of the same game loaded.)
+
+### 2023-04-30 - More Shockwave Tweaks
+Enables fine-grained control over which tweaks to use for which game. Speeds up loading of some games that aren't quite as finnicky.
+Also prevents caching of the Shockwave game include library, DGS_BIOS.cct
+
+### 2023-04-20 - Gallery Tweak
+Re-enables the ability to spam-click 'Upgrade' in the Gallery Edit section.
+
+### 2023-04-19 - Small Updates
+Changed the Stackpath handling code to switch to HTTP POST to preserve the Referer header. This prevents those 'You were directed here from the wrong place' or 'You didn't complete the form properly/ enter youor PIN' errors when Stackpath interrupts your request.
+
+### 2023-04-11 Security Update - Important:
 I was hoping this would never happen, but unfortunately through an oversight, your neo cookies were sent to my server, 
 including your login cookie. I have double-checked, and no cookies were ever saved, and they were always encrypted using SSL, 
 so there is nothing to worry about, **but I still recommend that you logout and log back in, which will invalidate your old login cookie**. 

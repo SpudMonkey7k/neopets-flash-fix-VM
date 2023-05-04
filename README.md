@@ -82,7 +82,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
    From "C:\Program Files (x86)\Pale Moon\", copy the "plugins" folder and paste it into your "%appdata%\Moonchild Productions\Pale Moon\Profiles\RANDOM_NAME.default\" directory. RANDOM_NAME will be different for you, but you can put "%appdata%\Moonchild Productions\Pale Moon\Profiles\" into the Run box (without quotes) and it should open up the directory containing your profile folder. 
 6. Start Pale Moon (32-bit version) and try to play a Shockwave wave like Hannah and the Pirate caves!
 7. See notes below, and Troubleshooting farther  below for resolutions to common issues.
-8. **Recommended:** Before you click the "Play" button to load the game, go to Fiddler->Rules->Performance->Simulate Modem Speeds, and then load the game. This helps avoid a lot of headache. You can disable the option after the game loads.
+8. **Recommended:** Before you click the "Play" button to load the game, verify: Rules->Shockwave Tweaks->Enabled. I spent countless hours refining this selection of tweaks to get the best results out of each Shockwave game :)
 
 **Bad Driver Bug**
 - See full details here: https://gaming.stackexchange.com/questions/339173/how-can-i-play-dcr-shockwave-games?newreg=534f64e9e2ad4f698d7c1607667a48df
@@ -101,7 +101,7 @@ Change it to:
 > nvldumdx.dll  
 > nvldumd.dll
 
-You might get this error, just ignore it:
+You might get this error, just ignore it (it's from not having a blank line after the last entry, I believe):
 > Data of type REG_MULTI_SZ cannot contain empty strings.  
 > Registry Editor will remove all empty strings found.
 
@@ -124,18 +124,18 @@ You might get this error, just ignore it:
 
 ### Troubleshooting Errors / Submitting Scores / Stuck at loading screen:
 1. You should try and load a page on Neopets just before you submit your score to try and prevent Stackpath errors.
-2. However, if your score fails to submit, you can look in the recent packets of Fiddler for process_(flash or shockwave)_score.phtml. Double click it, and click 'Decode response' If you see a bunch of HTML instead of a simple bit of encoded text, then you can likely still submit your score by right-clicking the packet on the left-side of Fiddler, and click Copy->Just URL, then pasting this into your browser. You should hopefully see "success=1" as part of the result message.
-3. If you see errcode=17, I have no idea what causes this, but there is no way to save your score as far as I know. I know it can happen if the game is started before 12AM NST and you try to submit the score after 12AM, but it can also happen in the middle of the day, so who knows.
+2. However, if your score fails to submit, you can visit the virtual URL: https://www.neopets.com/fixscore  which will automatically resubmit the score in the browser, solving Stackpath naturally.
+3. If you see errcode=17 in the score output result (only visible via the fixscore link, or Fiddler logs), this is caused by the "session ID" being invalid. This can happen if you load up the same game twice, or at approximately Midnight NST, all sessions are cleared. (This prevents scores from being submit much later) 
 4. If you don't even SEE a process_xxx_score.phtml packet, and you see a couple oddly-placed zeros instead of the score-submission screen, this seems to be caused by the Flash game being in a bad state. Try next two steps.
 5. In Fiddler, if you go to Rules->Performance->Simulate Modem Speeds, and then reload the game with cache disabled (open Pale Moon's Inspect Element tool inside the game window (try the outside edges outside the game area), click the Settings/Gear icon in the top-right of the Inspect window, and then enable "Disable HTTP Cache (when toolbox is open)", then reload the game with the Inspect window open and Simulate Modem Speeds enabled. This will make the game take a while to load, but it's worth it, because you don't have to reload it constantly and pray that your score will submit when you finally get a good one.
 6. If the game fails to load and gets stuck at the loading screen, try step #5, or reloading the game a couple times. Restart the browser if all else fails, especially with Shockwave, we're using old versions which can crash and freeze occasionally.
 7. If 3dvia games are the ones not working, go [here](https://3dlifeplayer.dl.3dvia.com/player/install/3DLifePlayer.js) and accept risk if prompted. (It probably means you didn't install/trust the certificate in the Fiddler instructions)
 8. If Hannah and the Ice Caves says, 'Sorry. It appears that this game is not running at its intended location', hold Shift + O + K (in that order) and it should start right up. Make sure you click inside the game window first. (letter O, like OK)
-9. If you start running out of memory, it's probably because you let Fiddler run too long while watching Youtube / streaming. Restart Fiddler and you should be fine.
-10. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. Close Pale Moon, and restart it from the 64-bit installation.
-11. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave, or 2. You didn't copy the plugins directory to your user profile.
-12. If the game doesn't fit / runs outside the window, this is usually because you're zoomed out. Reset zoom to 100% and reload the game.
-13. Terror Mountain Tilt: If you can't distinguish the colors of the rings, try switching to OpenGL or another renderer by right-clicking the game and going to Properties, iirc.
+9. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. Close Pale Moon, and restart it from the 64-bit installation. (You can fix it on 32-bit mode by adding "ProtectedMode=0" to c:\windows\SysWOW64\Macromed\Flash\mms.cfg and restarting the browser.)
+10. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave, or 2. You didn't copy the plugins directory to your user profile.
+11. If the game doesn't fit / runs outside the window, this is usually because you're zoomed out. Reset zoom to 100% and reload the game.
+12. Terror Mountain Tilt: If you can't distinguish the colors of the rings, try switching to OpenGL or another renderer by right-clicking the game and going to Properties, iirc.
+13. If Dice Escape is the only Shockwave game you can't get working, you need to do the "Bad Driver Bug" fix listed above.
 
 ### Pale Moon default installation locations:
 
