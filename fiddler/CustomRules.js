@@ -296,9 +296,9 @@ class Handlers
 					oSession.utilCreateResponseAndBypassServer();
 					oSession.ResponseHeaders.AssignFromString(resendScoreHdrs);
 				} else {
-					var resendScoreMsg = "Your last score wasn't blocked by Stackpath, so we cannot re-submit it.";
+					var resendScoreMsg = "Your last score wasn't blocked by Stackpath, so we cannot re-submit it. It is gone, sorry. Reload the game before you try again!";
 					if (saved_score_result) {
-						resendScoreMsg += "<br /><br />Your last score submission's result was:<br /><pre>" + saved_score_result + "</pre>";
+						resendScoreMsg += "<br /><br />(Technical details) Your last score submission's result was:<br /><pre>" + saved_score_result + "</pre>";
 					}
 					oSession.utilCreateResponseAndBypassServer();
 					oSession.utilSetResponseBody(resendScoreMsg);
