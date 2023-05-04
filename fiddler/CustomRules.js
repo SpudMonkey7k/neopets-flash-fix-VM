@@ -169,6 +169,11 @@ class Handlers
 	}
 
 	static var swGame = '';
+
+	// Vars to enable score re-submissions
+	static var saved_score;
+	static var saved_score_result;
+
 	static function OnBeforeRequest(oSession: Session) {
 		// Sample Rule: Color ASPX requests in RED
 		// if (oSession.uriContains(".aspx")) {	oSession["ui-color"] = "red";	}
@@ -254,6 +259,7 @@ class Handlers
 					oSession["request-trickle-delay"] = '10';
 					oSession["response-trickle-delay"] = '20';
 				} else {
+					swGame = '';
 					oSession["request-trickle-delay"] = '10';
 					oSession["response-trickle-delay"] = '20';
 				}
@@ -283,9 +289,24 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
+			// Shortcut to resubmit score
+			if (oSession.uriContains('neopets.com/sendscore')) {
+				if (saved_score) {
+					var resendScoreHdrs = "HTTP/1.0 302 FOUND\r\nContent-type: text/html; charset=iso-8859-1\r\nLocation: " + saved_score + "\r\n\r\n";
+					oSession.utilCreateResponseAndBypassServer();
+					oSession.ResponseHeaders.AssignFromString(resendScoreHdrs);
+				} else {
+					var resendScoreMsg = "Your last score wasn't blocked by Stackpath, so we cannot re-submit it.";
+					if (saved_score_result) {
+						resendScoreMsg += "<br /><br />Your last score submission's result was:<br /><pre>" + saved_score_result + "</pre>";
+					}
+					oSession.utilCreateResponseAndBypassServer();
+					oSession.utilSetResponseBody(resendScoreMsg);
+				}
+			}
 			// Fix 3dvia games not sending score
 			if (oSession.uriContains('process_flash_score') && oSession.oRequest.headers.ExistsAndContains('User-Agent', 'Virtools Webserver Manager')) {
-				//try to fix cookies not sent to dev to bypass stackpath
+				//Fix cookies not sent to server because of VirtualBrowser to appease stackpath
 				if (saved_cookies != null) {
 					oSession.oRequest.headers["Cookie"] = saved_cookies;
 				}
@@ -431,7 +452,7 @@ class Handlers
 		}
 		if (oSession.host.Contains('neofixes.com')) {
 			if (oSession.responseCode == 404 &&	oSession.oRequest.headers.ExistsAndContains('X-NeoFixes', 'get-translation')) {
-				FiddlerObject.alert("This translation doesn't exist in our database!\n\nEnable:\n\tRules->Advanced->Force Neo Translations\nand reload the game.\n\nAnd please consider enabling:\n\tRules->Advanced->Auto Upload Translations\nto help others in your situation!");
+				FiddlerObject.alert("This translation doesn't exist in our database!\n\Disable:\n\tRules->Advanced->Use Translation Mirror\nand reload the game.\n\nAnd please consider enabling:\n\tRules->Advanced->Upload Translations\nto help others in your situation!");
 			}
 			if (oSession.oResponse.headers.Exists('X-NF-Message')) {
 				FiddlerObject.alert(oSession.oResponse.headers['X-NF-Message']);
@@ -469,6 +490,17 @@ class Handlers
 					}
 				}
 
+			}
+			// Store score to re-send
+			if (oSession.uriContains('process_shockwave_score') || oSession.uriContains('process_flash_score')) {
+				var scoreResult = oSession.GetRequestBodyAsString();
+				if (!scoreResult.Contains('success=')) {
+					// Stackpath is the only reason you shouldn't see this
+					saved_score = oSession.fullUrl;
+				} else {
+					saved_score = null;
+					saved_score_result = scoreResult;
+				}
 			}
 			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
 			if (!m_HasNeopetsPremium && oSession.uriContains('play_flash.phtml')) {
