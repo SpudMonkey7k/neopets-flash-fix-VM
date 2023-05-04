@@ -497,6 +497,7 @@ class Handlers
 				if (!scoreResult.Contains('success=')) {
 					// Stackpath is the only reason you shouldn't see this
 					saved_score = oSession.fullUrl;
+					saved_score_result = null;
 				} else {
 					saved_score = null;
 					saved_score_result = scoreResult;
