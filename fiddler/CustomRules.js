@@ -290,7 +290,7 @@ class Handlers
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
 			// Shortcut to resubmit score
-			if (oSession.uriContains('neopets.com/sendscore')) {
+			if (oSession.fullUrl.ToLower().Contains('neopets.com/fixscore')) {
 				if (saved_score) {
 					var resendScoreHdrs = "HTTP/1.0 302 FOUND\r\nContent-type: text/html; charset=iso-8859-1\r\nLocation: " + saved_score + "\r\n\r\n";
 					oSession.utilCreateResponseAndBypassServer();
