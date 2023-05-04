@@ -493,7 +493,7 @@ class Handlers
 			}
 			// Store score to re-send
 			if (oSession.uriContains('process_shockwave_score') || oSession.uriContains('process_flash_score')) {
-				var scoreResult = oSession.GetRequestBodyAsString();
+				var scoreResult = oSession.GetResponseBodyAsString();
 				if (!scoreResult.Contains('success=')) {
 					// Stackpath is the only reason you shouldn't see this
 					saved_score = oSession.fullUrl;
