@@ -529,6 +529,11 @@ class Handlers
 					saved_score_result = scoreResult;
 				}
 			}
+			// Fix Resubmit ShopWizard on Palemoon / older mozilla:
+			if (oSession.uriContains('np-templates/ajax/wizard.php')) {
+				oSession.utilDecodeResponse();
+				oSession.utilReplaceInResponse("'Resubmit' data-ajaxgenerated='yes'", "'Resubmit' data-ajaxgenerated='yes' onClick='return false;'");
+			}
 			// Fix what neo broke on March 1st 2023 that broke games for non-premium members:
 			if (!m_HasNeopetsPremium && oSession.uriContains('play_flash.phtml')) {
 				const hiddenMatch = '</body>';
