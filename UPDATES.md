@@ -1,3 +1,8 @@
+## 2023-05-06 - "Transaction Expired" bug fixed!
+Now you will no longer get 'Transaction expired' when you try to buy an item right after you load the shop! This is enabled by default and cannot be disabled, however it only offsets the time by 2 minutes, which means you cannot get tricked into clicking a malicious buy link. 
+
+If living dangerously is your thing... There is ALSO an option in Rules->Advanced->Shop Transactions Never Expire. This does what it says, BUT there is another variable, 'ref_ck' which can change. If that happens you will get, "You've been directed here from the wrong place." You will have to reload the shop in that case, but that variable only changes every several hours or daily.
+
 ## 2023-05-05 - Easily re-submit failed game scores!
 The next best thing to removing the Stackpath problem!
 
