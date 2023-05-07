@@ -152,6 +152,10 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.upload_trans")
 	var m_UploadTranslations: boolean = false;
 
+	public static RulesOption("Shop Transactions Never Expire", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.tx_no_expire")
+	var m_ShopTransactionsNeverExpire: boolean = false;
+
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
 	public static ToolsAction("Reset Script")
@@ -289,6 +293,28 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
+			if (oSession.uriContains('/buy_item.phtml')) {
+				// The code below will ensure you never get expired shop items, however the ref_ck could still change causing 'directed here from the wrong place'
+				// var expiredTs = Math.round((new Date()).getTime() / 1000) - 180;
+				var expiredTs = 0;
+				// Get the current timestamp from the buy_item URL (to avoid fake links)
+				var getTsRegex = /\/buy_item.phtml.*&xhs=([0-9n-s]+).*/;
+				if (!m_ShopTransactionsNeverExpire) {
+					expiredTs = oSession.PathAndQuery.replace(getTsRegex, '$1');
+					expiredTs = expiredTs.replace('n', 'a').replace('o', 'b').replace('p', 'c').replace('q', 'd').replace('r', 'e').replace('s', 'f');
+
+					// Subtract 2 minutes to avoid servers being off by 90 seconds.
+					expiredTs = parseInt(expiredTs, 16) - 120;
+				} else {
+					expiredTs = Math.round((new Date()).getTime() / 1000) - 120;
+				}
+				// Turn it back into the right format
+				expiredTs = expiredTs.toString(16);
+				expiredTs = expiredTs.replace('a', 'n').replace('b', 'o').replace('c', 'p').replace('d', 'q').replace('e', 'r').replace('f', 's');
+
+				// Rewrite the query:
+				oSession.PathAndQuery = oSession.PathAndQuery.replace(/xhs=[0-9n-s]+/, 'xhs=' + expiredTs);
+			}
 			// Shortcut to resubmit score
 			if (oSession.fullUrl.ToLower().Contains('neopets.com/fixscore')) {
 				if (saved_score) {
