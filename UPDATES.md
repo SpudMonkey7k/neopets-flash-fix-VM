@@ -3,6 +3,8 @@ Now you will no longer get 'Transaction expired' when you try to buy an item rig
 
 If living dangerously is your thing... There is ALSO an option in Rules->Advanced->Shop Transactions Never Expire. This does what it says, BUT there is another variable, 'ref_ck' which can change. If that happens you will get, "You've been directed here from the wrong place." You will have to reload the shop in that case, but that variable only changes every several hours or daily.
 
+Also fixed a bug that was preventing "Resubmit (shop wizard searches)" from working on Pale Moon :)
+
 ## 2023-05-05 - Easily re-submit failed game scores!
 The next best thing to removing the Stackpath problem!
 
