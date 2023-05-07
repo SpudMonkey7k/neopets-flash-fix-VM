@@ -301,7 +301,7 @@ class Handlers
 				var getTsRegex = /\/buy_item.phtml.*&xhs=([0-9n-s]+).*/;
 				if (!m_ShopTransactionsNeverExpire) {
 					expiredTs = oSession.PathAndQuery.replace(getTsRegex, '$1');
-					expiredTs = expiredTs.replace('n', 'a').replace('o', 'b').replace('p', 'c').replace('q', 'd').replace('r', 'e').replace('s', 'f');
+					expiredTs = expiredTs.replace(/n/g, 'a').replace(/o/g, 'b').replace(/p/g, 'c').replace(/q/g, 'd').replace(/r/g, 'e').replace(/s/g, 'f');
 
 					// Subtract 2 minutes to avoid servers being off by 90 seconds.
 					expiredTs = parseInt(expiredTs, 16) - 120;
@@ -310,7 +310,7 @@ class Handlers
 				}
 				// Turn it back into the right format
 				expiredTs = expiredTs.toString(16);
-				expiredTs = expiredTs.replace('a', 'n').replace('b', 'o').replace('c', 'p').replace('d', 'q').replace('e', 'r').replace('f', 's');
+				expiredTs = expiredTs.replace(/a/g, 'n').replace(/b/g, 'o').replace(/c/g, 'p').replace(/d/g, 'q').replace(/e/g, 'r').replace(/f/g, 's');
 
 				// Rewrite the query:
 				oSession.PathAndQuery = oSession.PathAndQuery.replace(/xhs=[0-9n-s]+/, 'xhs=' + expiredTs);
