@@ -602,7 +602,10 @@ class Handlers
 				const cocoShyBody = oSession.GetResponseBodyAsString().replace(cocoRegex, 'coconutshy_v6.swf?lang=$1');
 				oSession.utilSetResponseBody(cocoShyBody);
 			}
-
+			// Fix other Halloween games
+			if (oSession.uriContains("/halloween/") && oSession.uriContains('.phtml')) {
+				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().replace(/http:\/\//g, "https://"));
+			}
 			//fixes shockwave games
 			if (oSession.uriContains("play_shockwave.phtml") && oSession.GetResponseBodyAsString().Contains("game_container")) {
 				oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('document.write', 'console.log').Replace("swRestart='false'", "swRestart='true'").Replace("swContextMenu='false'", "swContextMenu='true'"));
