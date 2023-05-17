@@ -576,19 +576,22 @@ class Handlers
 					var respBody = oSession.GetResponseBodyAsString();
 					// Check if this is a stackpath response:
 					if (respBody.Length < 30000 && respBody.Contains('<!doctype html> <html lang="en">')) {
-						if (oSession.HTTPMethodIs('GET')) {
-							// Just reload GET's so they don't lose the request URI
-							respBody = respBody.Replace('redirect("reload")','redirect("post")');
+						const refererRegex = /^(https?:\/\/)?([^.]+\.)?neopets.com($|\/)/;
+						if (oSession.oRequest.headers.Exists('Referer') && oSession.oRequest.headers['Referer'].match(refererRegex)) {
+							if (oSession.HTTPMethodIs('GET')) {
+								// Just reload GET's so they don't lose the request URI
+								respBody = respBody.Replace('redirect("reload")','redirect("post")');
+							}
+							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
+							var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
+							var data = oSession.GetRequestBodyAsString();
+							var prev = oSession.oRequest.headers['Referer'];
+							replacementStr = replacementStr.replace('FORM_ACTION', oSession.fullUrl);
+							replacementStr = replacementStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
+							replacementStr = replacementStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
+							oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
+							oSession["ui-backcolor"] = "lime";
 						}
-						// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
-						var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
-						var data = oSession.GetRequestBodyAsString();
-						var prev = oSession.oRequest.headers['Referer'];
-						replacementStr = replacementStr.replace('FORM_ACTION', oSession.fullUrl);
-						replacementStr = replacementStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
-						replacementStr = replacementStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
-						oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
-						oSession["ui-backcolor"] = "lime";
 					}
 				}
 			}
