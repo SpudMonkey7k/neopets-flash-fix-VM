@@ -156,6 +156,10 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.tx_no_expire")
 	var m_ShopTransactionsNeverExpire: boolean = false;
 
+	public static RulesOption("Use Old Skarl (Enables Charm!)", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.old_skarl")
+	var m_UseOldSkarl: boolean = false;
+
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
 	public static ToolsAction("Reset Script")
@@ -199,6 +203,9 @@ class Handlers
 			oSession.utilSetRequestBody("");
 		}
 		*/
+		if (m_UseOldSkarl && oSession.PathAndQuery == "/medieval/grumpyking.phtml") {
+			oSession.PathAndQuery = "/medieval/grumpyking.phtml/";
+		}
 		if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
 			oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith);
 		}
@@ -528,6 +535,26 @@ class Handlers
 					saved_score = null;
 					saved_score_result = scoreResult;
 				}
+			}
+			// Populate old King Skarl Results randomly since they aren't saved
+			if (oSession.uriContains('/medieval/grumpyking.phtml/')) {
+				var skarlChoices = oSession.GetResponseBodyAsString();
+				// Choose the avatar question:
+				skarlChoices = skarlChoices.Replace('value="What"', 'value="What" SELECTED');
+				skarlChoices = skarlChoices.Replace('value="do"', 'value="do" SELECTED');
+				skarlChoices = skarlChoices.Replace('value="you do if"', 'value="you do if" SELECTED');
+				skarlChoices = skarlChoices.replace(/part 4<\/option>(\s+)<option/, 'part 4</option>$1<option SELECTED');
+				skarlChoices = skarlChoices.Replace('value="fierce"', 'value="fierce" SELECTED');
+				skarlChoices = skarlChoices.Replace('value="Peophins"', 'value="Peophins" SELECTED');
+				skarlChoices = skarlChoices.replace(/part 7<\/option>(\s+)<option/, 'part 7</option>$1<option SELECTED');
+				skarlChoices = skarlChoices.Replace('value="has eaten too much"', 'value="has eaten too much" SELECTED');
+				skarlChoices = skarlChoices.replace(/part 9<\/option>(\s+)<option/, 'part 9</option>$1<option SELECTED');
+				skarlChoices = skarlChoices.Replace('value="tin of olives"', 'value="tin of olives" SELECTED');
+
+				// Choose random answers:
+				skarlChoices = skarlChoices.Replace("</script>",'\nfunction randomizeAnswers(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),t=Math.floor(Math.random()*n.getElementsByTagName("option").length);n.selectedIndex=t}}document.addEventListener("DOMContentLoaded",function(){randomizeAnswers()},!1);\n</script>');
+				// Update the response:
+				oSession.utilSetResponseBody(skarlChoices);
 			}
 			// Fix Resubmit ShopWizard on Palemoon / older mozilla:
 			if (oSession.uriContains('np-templates/ajax/wizard.php')) {

@@ -1,11 +1,20 @@
-## 2023-05-06 - "Transaction Expired" bug fixed!
+## 2023-05-22 - You can get Skarl Collectible Charm again!
+So basically, the old-interface version of King Skarl can still give the Charm according to neo_truths. However, the old-interface version is broken... try it yourself, https://www.neopets.com/medieval/grumpyking.phtml/old
+
+This update fixes that bug, automatically using the Old Version when you visit King Skarl... It will pre-populate the Avatar question and a random answer so you don't have to choose everytime. (Old version doesn't save previous question)
+
+The odds of getting the Charm are still very very low, so you probably won't get it... but at least it's possible! (Roughly 1 in 2000 chance per Hysterics if my understanding of neo_truths post is correct)
+
+Note: This can be disabled in Rules->Advanced->Use Old Skarl, but why would you want to? :D
+
+### 2023-05-06 - "Transaction Expired" bug fixed!
 Now you will no longer get 'Transaction expired' when you try to buy an item right after you load the shop! This is enabled by default and cannot be disabled, however it only offsets the time by 2 minutes, which means you cannot get tricked into clicking a malicious buy link. 
 
 If living dangerously is your thing... There is ALSO an option in Rules->Advanced->Shop Transactions Never Expire. This does what it says, BUT there is another variable, 'ref_ck' which can change. If that happens you will get, "You've been directed here from the wrong place." You will have to reload the shop in that case, but that variable only changes every several hours or daily.
 
 Also fixed a bug that was preventing "Resubmit (shop wizard searches)" from working on Pale Moon :)
 
-## 2023-05-05 - Easily re-submit failed game scores!
+### 2023-05-05 - Easily re-submit failed game scores!
 The next best thing to removing the Stackpath problem!
 
 Now, if you send a score, and Stackpath interrupts it, (score fails to send for whatever reason), you can simply go to www.neopets.com/fixscore
