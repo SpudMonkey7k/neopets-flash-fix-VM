@@ -552,7 +552,7 @@ class Handlers
 				skarlChoices = skarlChoices.Replace('value="tin of olives"', 'value="tin of olives" SELECTED');
 
 				// Choose random answers:
-				skarlChoices = skarlChoices.Replace("</script>",'\nfunction randomizeAnswers(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),t=Math.floor(Math.random()*n.getElementsByTagName("option").length);n.selectedIndex=t}}document.addEventListener("DOMContentLoaded",function(){randomizeAnswers()},!1);\n</script>');
+				skarlChoices = skarlChoices.Replace("</script>",'\nfunction randomizeAnswers(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),t=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1));n.selectedIndex=t+1}}document.addEventListener("DOMContentLoaded",function(){randomizeAnswers()},!1);\n</script>');
 				// Update the response:
 				oSession.utilSetResponseBody(skarlChoices);
 			}
