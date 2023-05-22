@@ -20,6 +20,10 @@ def request(flow: http.HTTPFlow) -> None:
         if "gettranslationxml.phtml" in url and flow.request.method == "POST" and "lang" in flow.request.urlencoded_form:
             flow.request.urlencoded_form["lang"] = "en"
 
+        # old king skarl
+        if flow.request.url.endswith('medieval/grumpyking.phtml'):
+            flow.request.url = flow.request.url + '/'
+
 def requestheaders(flow: http.HTTPFlow) -> None:
     global saved_cookies
     url = flow.request.pretty_url
@@ -65,3 +69,6 @@ def response(flow: http.HTTPFlow) -> None:
         #fixes neohome v2
         if "neohome/property/" in url:
             flow.response.content = flow.response.content.replace(b"services.neopets", b"www.neopets").replace(b"http%3A", b"https%3A")
+
+        if "grumpyking.phtml" in url:
+                    flow.response.content = flow.response.content.replace(b'</script>', b'function randomizeAnswer(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}function randomizeQuestion(){for(var e=1;e<=10;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}document.addEventListener("DOMContentLoaded",function(){randomizeQuestion(),randomizeAnswer()},!1);</script>', 1)
