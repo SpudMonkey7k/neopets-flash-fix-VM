@@ -36,6 +36,7 @@ You will need the proxy running whenever you want the play the games / use the n
 7. In the `No proxy for` box, put this:
 > localhost, *.local, 169.254/16, discord.com, discordapp.com, netflix.com, *.discord.com, *.discordapp.com, *.netflix.com, *.discordapp.net, discordapp.net, *.google.com, google.com, *.gmail.com, gmail.com, *.youtube.com, *.gstatic.com, *.cloudflare.com, *.googleapis.com, *.jquery.com, *.googlevideo.com, support.neopets.com, *.akamaihd.net, *.jquery.com, 127.0.0.1, *.googlevideo.com, *.openai.com, support.neopets.com, *.paypal.com, *.nflxvideo.net, *.icloud.com
 8. Click OK to save
+![image](https://github.com/themrrobert/neopets-flash-fix-windows-10/assets/10122432/c137d39f-2758-41f2-bf57-1da368f8e93b)
 
 ### Import the certificate for SSL:
 1. Go back into the Pale Moon settings/preferences.
