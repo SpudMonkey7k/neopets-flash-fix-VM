@@ -1,5 +1,7 @@
 # Play Flash, Shockwave, and 3dvia Neopets games on Windows 10 and Windows 11! Works in 2022 / 2023
 
+## [Mac Instructions](README_MAC.md) (experimental)
+
 ### Important: We are now logging important updates [here](UPDATES.md).
 Please check it out as the information there is very important.
 

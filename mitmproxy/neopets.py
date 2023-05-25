@@ -16,6 +16,20 @@ def load(loader: Loader) -> None:
 def request(flow: http.HTTPFlow) -> None:
     url = flow.request.pretty_url
     if "neopets.com" in flow.request.host:
+
+        # use the translation mirror to minimize stackpath errors:
+        if "transcontent/gettranslationxml.phtml" in url:
+            flow.request.host = "www.neofixes.com"
+            flow.request.headers["host"] = "www.neofixes.com"
+            if "cookie" in flow.request.headers:
+                del flow.request.headers["cookie"]
+            if "Cookie" in flow.request.headers:
+                del flow.request.headers["Cookie"]
+            if flow.request.urlencoded_form and flow.request.method == "POST":
+                flow.request.urlencoded_form["lang"] = "en"
+            else:
+                flow.request.query["lang"] = "en"
+
         #fixes games pointing to dev server that have chinese lang when offline
         if "gettranslationxml.phtml" in url and flow.request.method == "POST" and "lang" in flow.request.urlencoded_form:
             flow.request.urlencoded_form["lang"] = "en"
@@ -30,6 +44,11 @@ def requestheaders(flow: http.HTTPFlow) -> None:
     if "neopets.com" in flow.request.host:
         flow.request.scheme = "https"
         flow.request.port = 443
+
+        #Fix potato counter because it doesn't use images. for some reason
+        if "games/g226/config.xml" in url:
+       		flow.request.host = "images.neopets.com";
+       		flow.request.headers["host"] = "images.neopets.com"
 
         if flow.request.host == "dev.neopets.com":
             flow.request.host = "www.neopets.com"
@@ -52,7 +71,7 @@ def requestheaders(flow: http.HTTPFlow) -> None:
         if "process_hideandseek.phtml" in url:
             flow.request.headers["referer"] = "http://www.neopets.com/games/hidenseek"
         
-        if url.endswith(".swf") or url.endswith(".txt"):
+        if url.endswith(".swf") or url.endswith(".txt") or url.endswith(".xml"):
             p = flow.request.path.replace('/', os.sep)
             for path in [Path(FILES_DIR + p), Path(str(Path(__file__).resolve()).split("mitmproxy")[0] + "Fiddler" + os.sep + "neopets" + p)]:
                 if path.is_file():
@@ -71,4 +90,4 @@ def response(flow: http.HTTPFlow) -> None:
             flow.response.content = flow.response.content.replace(b"services.neopets", b"www.neopets").replace(b"http%3A", b"https%3A")
 
         if "grumpyking.phtml" in url:
-                    flow.response.content = flow.response.content.replace(b'</script>', b'function randomizeAnswer(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}function randomizeQuestion(){for(var e=1;e<=10;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}document.addEventListener("DOMContentLoaded",function(){randomizeQuestion(),randomizeAnswer()},!1);</script>', 1)
+            flow.response.content = flow.response.content.replace(b'</script>', b'function randomizeAnswer(){for(var e=1;e<=8;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}function randomizeQuestion(){for(var e=1;e<=10;e++){var n=document.getElementById("ap"+e),o=Math.floor(Math.random()*(n.getElementsByTagName("option").length-1))+1;n.selectedIndex=o}}document.addEventListener("DOMContentLoaded",function(){randomizeQuestion(),randomizeAnswer()},!1);</script>', 1)
