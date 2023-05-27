@@ -367,11 +367,13 @@ class Handlers
 				oSession.oRequest.headers.Exists("x-flash-version")
 			) {
 				var path = "neopets" + oSession.PathAndQuery
-				if (oSession.oRequest.headers.Exists("x-flash-version")) {
+				//if (oSession.oRequest.headers.Exists("x-flash-version")) {
+				if (path.Contains('?')) {
 					path = path.Split("?")[0];
 				}
 				// Note: 3dvia installer/player javascript is mirrored in case it ever goes down
 				if (System.IO.File.Exists(path)) {
+					oSession['ui-backcolor'] = '#bbbbee';
 					oSession.utilCreateResponseAndBypassServer();
 					oSession.ResponseBody = System.IO.File.ReadAllBytes(path);
 					if (path.Contains(".xml")) {
@@ -598,25 +600,35 @@ class Handlers
 			}
 			// Fix some of the stackpath issues, like when interrupting SDB, gallery, etc.
 			if (oSession.uriContains('.phtml') || oSession.fullUrl.Substring(oSession.fullUrl.Length - 1) == '/') {
-				// Try and minimize the amount of string compares we have to do by limiting it to stack patg eligible pages + lengths
-				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 2000) {
-					var respBody = oSession.GetResponseBodyAsString();
-					// Check if this is a stackpath response:
-					if (respBody.Length < 30000 && respBody.Contains('<!doctype html> <html lang="en">')) {
-						const refererRegex = /^(https?:\/\/)?([^.]+\.)?neopets.com($|\/)/;
-						if (oSession.oRequest.headers.Exists('Referer') && oSession.oRequest.headers['Referer'].match(refererRegex)) {
+				// Try and minimize the amount of string compares we have to do by limiting it to stackpath eligible pages + lengths
+				if (null != oSession.responseBodyBytes && oSession.responseBodyBytes.Length < 30000 && oSession.responseBodyBytes.Length > 1000) {
+					const refererRegex = /^(https?:\/\/)?([^.]+\.)?neopets.com($|\/)/;
+					if (oSession.oRequest.headers.Exists('Referer') && oSession.oRequest.headers['Referer'].match(refererRegex)) {
+						var respBody = oSession.GetResponseBodyAsString();
+						// Check if this is a stackpath response:
+						if (oSession.HTTPMethodIs('POST') && respBody.Length < 30000 && respBody.Contains("Neopets - Loading site...")) {
+							var replStr = "const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage;";
+							var data = oSession.GetRequestBodyAsString();
+							var prev = oSession.oRequest.headers['Referer'];
+							replStr = replStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
+							replStr = replStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
+							oSession.utilSetResponseBody(respBody.Replace('submitFrm.sbbSbmt();', replStr + 'submitFrm.sbbSbmt();'));
+							oSession['ui-backcolor'] = "magenta";
+
+						} else if (respBody.Length < 30000 && respBody.Contains('<!doctype html> <html lang="en">')) {
 							if (oSession.HTTPMethodIs('GET')) {
 								// Just reload GET's so they don't lose the request URI
 								respBody = respBody.Replace('redirect("reload")','redirect("post")');
+							} else {
+								// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
+								var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
+								var data = oSession.GetRequestBodyAsString();
+								var prev = oSession.oRequest.headers['Referer'];
+								replacementStr = replacementStr.replace('FORM_ACTION', oSession.fullUrl);
+								replacementStr = replacementStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
+								replacementStr = replacementStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
+								oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
 							}
-							// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
-							var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
-							var data = oSession.GetRequestBodyAsString();
-							var prev = oSession.oRequest.headers['Referer'];
-							replacementStr = replacementStr.replace('FORM_ACTION', oSession.fullUrl);
-							replacementStr = replacementStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
-							replacementStr = replacementStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
-							oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
 							oSession["ui-backcolor"] = "lime";
 						}
 					}
