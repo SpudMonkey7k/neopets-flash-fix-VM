@@ -1,4 +1,9 @@
-## 2023-05-22 - You can get Skarl Collectible Charm again!
+## 2023-06-01 - Korbat's Lab Infinite Level Loading fixed
+This bug is caused by, wait for it... Stackpath (of course). This update caches the Korbat's Lab XML config so that Stackpath can't block it.
+
+You will need to update CustomRules.js (as always), but also be sure you download [neopets/process_cms_klab.xml](neopets/process_cms_klab.xml) into your Fiddler\neopets\ directory.
+
+### 2023-05-22 - You can get Skarl Collectible Charm again!
 So basically, the old-interface version of King Skarl can still give the Charm according to neo_truths. However, the old-interface version is broken... try it yourself, https://www.neopets.com/medieval/grumpyking.phtml/old
 
 This update fixes that bug, automatically using the Old Version when you visit King Skarl... It will pre-populate the Avatar question and a random answer so you don't have to choose everytime. (Old version doesn't save previous question)

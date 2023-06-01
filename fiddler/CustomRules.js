@@ -300,6 +300,21 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
+			// Fix stackpath blocking Korbat's Lab XML/CMS Data
+			if (oSession.uriContains('/process_cms.phtml')) {
+				// Mark for easy find for future games
+				oSession["ui-backcolor"] = "#FFAAAA";
+				const klabXML = 'neopets/process_cms_klab.xml';
+				if (System.IO.File.Exists(klabXML)) {
+					const reqBody = oSession.GetRequestBodyAsString();
+					if (decodeURI(oSession.fullUrl).Contains('item_id=64') || decodeURI(reqBody).Contains('item_id=64')) {
+						oSession.utilCreateResponseAndBypassServer();
+						oSession.oResponse.headers['Content-type'] = 'text/html';
+						oSession.ResponseBody = System.IO.File.ReadAllBytes(klabXML);
+						oSession["ui-backcolor"] = "#7777ff";
+					}
+				}
+			}
 			if (oSession.uriContains('/buy_item.phtml')) {
 				// The code below will ensure you never get expired shop items, however the ref_ck could still change causing 'directed here from the wrong place'
 				// var expiredTs = Math.round((new Date()).getTime() / 1000) - 180;
