@@ -622,7 +622,7 @@ class Handlers
 						var respBody = oSession.GetResponseBodyAsString();
 						// Check if this is a stackpath response:
 						if (oSession.HTTPMethodIs('POST') && respBody.Length < 30000 && respBody.Contains("Neopets - Loading site...")) {
-							var replStr = "const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);";
+							var replStr = "const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);submitFrm.appendChild(newMem);}window.history.replaceState(null, '', previousPage);";
 							var data = oSession.GetRequestBodyAsString();
 							var prev = oSession.oRequest.headers['Referer'];
 							replStr = replStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
