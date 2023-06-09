@@ -509,6 +509,20 @@ class Handlers
 			}
 		}
 		if (oSession.host.Contains("neopets.com")) {
+			// Fix Ability To Reset Petpage:
+			if (oSession.uriContains("editpage.phtml?pet_name")) {
+				const epParams = oSession.PathAndQuery.split('?')[1].split('&');
+				var petName = '';
+				for (var i = 0; i < epParams.length; i++) {
+					const pair = epParams[i].split('=');
+					if (pair[0] === 'pet_name') petName = pair[1];
+				}
+				if (petName !== '') {
+					oSession.utilDecodeResponse();
+					const fixCode = "</form><form action=\"/process_editpage.phtml\" method=\"post\"><input type='hidden' name='pet_name' value='" + petName + "' />";
+					oSession.utilReplaceInResponse("<input type='submit' name='subbyreset'", fixCode + "<input type='submit' name='subbyreset'");
+				}
+			}
 			// Automatically upload translation:
 			if (!m_UseTranslationMirror && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
 				var uri = "POST https://www.neofixes.com/api/upload_translation.phtml HTTP/1.0";
