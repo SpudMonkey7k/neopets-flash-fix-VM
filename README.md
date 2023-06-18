@@ -4,6 +4,7 @@
 
 ### Important: We are now logging important updates [here](UPDATES.md).
 Please check it out as the information there is very important.
+
 Video version of the guide (Thanks Halondrus!): [https://www.youtube.com/watch?v=1fYXmqy-h6o&pp=ygUYbmVvcGV0cyBmbGFzaCBndWlkZSAyMDIz](https://www.youtube.com/watch?v=1fYXmqy-h6o&pp=ygUYbmVvcGV0cyBmbGFzaCBndWlkZSAyMDIz)
 
 ## Important: Do not give your Fiddler session data to ANYONE.
