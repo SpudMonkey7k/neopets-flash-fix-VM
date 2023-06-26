@@ -1,3 +1,8 @@
+## 2023-06-26 - Fix Cookie leak
+This fixes an issue where some Neopets responses redirect the browser to insecure (HTTP) pages, which expose your Cookies to anyone listening. This will allow an attacker to bypass your password and 2FA and have full control of your account.
+
+This is obviously very bad, and we avoid it with this patch. (If you use previous version, you are still not vulnerable to this, because we always force HTTPS on neopets when fiddler is running, however, this patch will still prevent the page from loading the HTTP version.)
+
 ## 2023-06-01 - Korbat's Lab Infinite Level Loading fixed
 This bug is caused by, wait for it... Stackpath (of course). This update caches the Korbat's Lab XML config so that Stackpath can't block it.
 

@@ -509,6 +509,9 @@ class Handlers
 			}
 		}
 		if (oSession.host.Contains("neopets.com")) {
+			if (oSession.responseCode >= 301 && oSession.responseCode <= 302) {
+				oSession.ResponseHeaders['Location'] = oSession.ResponseHeaders['Location'].Replace('http:', 'https:');
+			}
 			// Fix Ability To Reset Petpage:
 			if (oSession.uriContains("editpage.phtml?pet_name")) {
 				const epParams = oSession.PathAndQuery.split('?')[1].split('&');
