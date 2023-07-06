@@ -158,7 +158,11 @@ class Handlers
 
 	public static RulesOption("Use Old Skarl (Enables Charm!)", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.old_skarl")
-	var m_UseOldSkarl: boolean = false;
+	var m_UseOldSkarl: boolean = true;
+
+	public static RulesOption("Flash NC Mall (Goggles Av)", "Ad&vanced")
+	BindPref("fiddlerscript.rules.adv.flash_mall")
+	var m_flashMall: boolean = false;
 
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
@@ -203,9 +207,7 @@ class Handlers
 			oSession.utilSetRequestBody("");
 		}
 		*/
-		if (m_UseOldSkarl && oSession.PathAndQuery == "/medieval/grumpyking.phtml") {
-			oSession.PathAndQuery = "/medieval/grumpyking.phtml/";
-		}
+
 		if ((null != gs_ReplaceToken) && (oSession.url.indexOf(gs_ReplaceToken)>-1)) {   // Case sensitive
 			oSession.url = oSession.url.Replace(gs_ReplaceToken, gs_ReplaceTokenWith);
 		}
@@ -239,6 +241,11 @@ class Handlers
 		}
 		if (!m_swDisabled) {
 			// More shockwave fixes
+			if (oSession.uriContains('games/preloaders/ml')) {
+				oSession["ui-backcolor"] = "Pink";
+				oSession["request-trickle-delay"] = '1';
+				oSession["response-trickle-delay"] = '1';
+			}
 			if (oSession.uriContains('.dcr') && !oSession.uriContains('g313_v10_23393.dcr')) {
 				if (oSession.oRequest.headers.Exists('If-Modified-Since')) oSession.oRequest.headers.Remove('If-Modified-Since');
 				if (oSession.oRequest.headers.Exists('If-None-Match')) oSession.oRequest.headers.Remove('If-None-Match');
@@ -300,6 +307,12 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
+			if (m_flashMall && oSession.PathAndQuery.Contains("/mall/pet_preview_h5.phtml")) {
+				oSession.PathAndQuery = oSession.PathAndQuery.Replace('pet_preview_h5.phtml', 'pet_preview.phtml');
+			}
+			if (m_UseOldSkarl && oSession.PathAndQuery == "/medieval/grumpyking.phtml") {
+				oSession.PathAndQuery = "/medieval/grumpyking.phtml/";
+			}
 			// Fix stackpath blocking Korbat's Lab XML/CMS Data
 			if (oSession.uriContains('/process_cms.phtml')) {
 				// Mark for easy find for future games
@@ -377,7 +390,7 @@ class Handlers
 			}
 			//fixes extra
 			if (
-				oSession.uriContains(".swf") || oSession.uriContains(".txt") ||
+				oSession.uriContains(".swf") || oSession.uriContains(".txt") || oSession.uriContains(".js") ||
 				oSession.uriContains('.xml') || oSession.oRequest.headers['Referer'].Contains('.swf') ||
 				oSession.oRequest.headers.Exists("x-flash-version")
 			) {
@@ -619,7 +632,7 @@ class Handlers
 				if (oSession.uriContains('play_shockwave.phtml')) {
 					oSession.utilSetResponseBody(oSession.GetResponseBodyAsString().Replace('.dcr?r=', '.dcr?r=' + Math.floor(Math.random() * 10000)));
 				}
-				if (oSession.uriContains('gaming_system/dgs_include_v2.swf') || oSession.uriContains('games/DGS_BIOS.cct')) {
+				if (oSession.uriContains('gaming_system/dgs_include_v2.swf') || oSession.uriContains('games/DGS_BIOS.cct') || oSession.uriContains('preloaders')) {
 					oSession.oResponse.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
 					oSession.oResponse.headers['Pragma'] = 'no-cache';
 					oSession.oResponse.headers['Expires'] = '0';
@@ -651,6 +664,7 @@ class Handlers
 							if (oSession.HTTPMethodIs('GET')) {
 								// Just reload GET's so they don't lose the request URI
 								respBody = respBody.Replace('redirect("reload")','redirect("post")');
+								oSession.utilSetResponseBody(respBody);
 							} else {
 								// Fix the 'addFields' function in stackpath to actually add the form data (and update the Referer):
 								var replacementStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";

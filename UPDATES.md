@@ -1,9 +1,24 @@
-## 2023-06-26 - Fix Cookie leak
+## 2023-07-06 - Get the Goggles Avatar!
+Today you can now use the Flash version of  the NC Mall and get the Goggles avatar again! 
+
+In Fiddler, Enable: "Rules->Advanced->Flash NC Mall (Goggles Av)"
+
+It's pretty buggy, but you can try on clothes. It's random when you get the Avatar, but in my testing I've got it in 1 - 3 tries.
+
+I _**probably**_ won't be doing any more work to fix the flash version of the mall, since the only useful thing is Goggles, however since the HTML5 version is so bad I **might** keep working on this.  
+
+PS. In addition to CustomRules.js you **_must_** also update/download the [neopets folder in this project](https://download-directory.github.io/?url=https://github.com/themrrobert/neopets-flash-fix-windows-10/tree/main/neopets) and unzip it into your Fiddler installation directory. (C:\Users\USERNAME\AppData\Local\Programs\Fiddler on Windows 10/11, or C:\Program Files\Fiddler\ on previous versions.... possibly "Program Files (x86)" or "Fiddler Classic" just look around until you find it.
+
+It must be unzipped into a 'neopets' folder, so when you're done, the file: INSTALLATION_DIRECTORY\Fiddler\neopets\mall\js\preview.js should exist.
+
+(Replace INSTALLATION_DIRECTORY with your Fiddler installation directory as desribed above, obviously)
+
+### 2023-06-26 - Fix Cookie leak (Neopets bug, not mine)
 This fixes an issue where some Neopets responses redirect the browser to insecure (HTTP) pages, which expose your Cookies to anyone listening. This will allow an attacker to bypass your password and 2FA and have full control of your account.
 
-This is obviously very bad, and we avoid it with this patch. (If you use previous version, you are still not vulnerable to this, because we always force HTTPS on neopets when fiddler is running, however, this patch will still prevent the page from loading the HTTP version.)
+This is obviously very bad, and we avoid it with this patch. (Previous versions were already not affected by this bug because we force all Neopets traffic to use HTTPS in the backend, however this patch will ensure the HTTPS version is loaded which is required by the Flash NC Mall tweak.)
 
-## 2023-06-01 - Korbat's Lab Infinite Level Loading fixed
+### 2023-06-01 - Korbat's Lab Infinite Level Loading fixed
 This bug is caused by, wait for it... Stackpath (of course). This update caches the Korbat's Lab XML config so that Stackpath can't block it.
 
 You will need to update CustomRules.js (as always), but also be sure you download [neopets/process_cms_klab.xml](neopets/process_cms_klab.xml) into your Fiddler\neopets\ directory.
