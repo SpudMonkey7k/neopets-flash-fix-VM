@@ -388,11 +388,9 @@ class Handlers
 			if (oSession.uriContains("gettranslationxml.phtml") && oSession.HTTPMethodIs("POST")) {
 				oSession.utilSetRequestBody(oSession.GetRequestBodyAsString().Replace("lang=ch", "lang=en"));
 			}
-			//fixes extra
+			// Load any custom overrides:
 			if (
-				oSession.uriContains(".swf") || oSession.uriContains(".txt") || oSession.uriContains(".js") ||
-				oSession.uriContains('.xml') || oSession.oRequest.headers['Referer'].Contains('.swf') ||
-				oSession.oRequest.headers.Exists("x-flash-version")
+				!oSession.uriContains(".png") && !oSession.uriContains(".jpg") || !oSession.uriContains(".gif")
 			) {
 				var path = "neopets" + oSession.PathAndQuery
 				//if (oSession.oRequest.headers.Exists("x-flash-version")) {
@@ -465,7 +463,7 @@ class Handlers
 			//fixes Clara on Ice, Let it Slide, Extreme Potato Counter
 			if (oSession.uriContains(".swf") || oSession.uriContains("/config.xml") || oSession.uriContains("/shellconfig.xml")) {
 				oSession.host = "images.neopets.com";
-				oSession.url = oSession.url.Replace("/games/https://images.neopets.com/games/", "/games/").Replace("games/games", "games");
+				oSession.url = oSession.url.Replace("/games/https://images.neopets.com/games/", "/games/").Replace("games/games", "games").Replace('/games///images.neopets.com/games/', '/games/');
 			}
 			//fixes kacheek seek
 			if (oSession.uriContains("process_hideandseek.phtml")) {
