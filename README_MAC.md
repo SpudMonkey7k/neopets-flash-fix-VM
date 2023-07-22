@@ -56,10 +56,19 @@ This should also fix the problems with Shockwave + 3dvia games, however I don't 
 
 ### Please send me anything you learn! 
 
-## Shockwave / 3dvia
-This requires a 32-bit browser, I'm not sure how to get Shockwave/3dVia working on a 64-bit mac.
+## 3dVia
+Typically requires a 32-bit browser to work, but maybe that's just on Windows. Try loading a 3dVia game and it should try to install on first load.
 
-You could try 'Classic Waterfox' for mac, or maybe Pale Moon can work, idk. Please give me any feedback you have regarding getting Shockwave/3dVia games working!
+## Shockwave
+This also requires a 32-bit browser on Windows, I'm not sure how to get Shockwave working on a 64-bit mac.
+
+You can find some versions of Shockwave for Mac on archive.org, however they are extremely broken, as a lot of required
+'xtras' weren't updated for Intel CPUs, and apparently they don't even work at all on Catalina and up.
+
+If you have a really old PowerPC mac, then you can probably get it working, but I haven't even been able to find a full 
+installer, and the slim version needs to download stuff from Adobe and those links are long dead.
+
+Sorry, you're pretty screwed on Mac, but if you manage to figure it out, let me know and I'll share it with the world!
 
 ### Known issues:
 
