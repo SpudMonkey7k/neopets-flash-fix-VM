@@ -1,4 +1,9 @@
-## 2023-07-06 - Get the Goggles Avatar!
+## 2023-07-23 - Downtime
+There was a few minutes of downtime which we apologize for. We're working on some new features, and I broke it temporarily.
+
+It should be working again!
+
+### 2023-07-06 - Get the Goggles Avatar!
 Today you can now use the Flash version of  the NC Mall and get the Goggles avatar again! 
 
 In Fiddler, Enable: "Rules->Advanced->Flash NC Mall (Goggles Av)"
