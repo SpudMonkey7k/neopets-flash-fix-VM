@@ -1,4 +1,13 @@
-## 2023-07-23 - Downtime
+## 2023-07-27 - Disable Inventory Stacking/Collapsing!
+Yay! Now you can use the inventory similar to the old days. I'm still working on a better fix, but this should be nice!
+
+```
+Rules->Advanced->Disable Inventory Stacking
+```
+
+This makes each duplicate item appear in it's own slot, and removes the force-refresh as long as you click the X after you use an item!.
+
+### 2023-07-27 - Downtime
 There was a few minutes of downtime which we apologize for. We're working on some new features, and I broke it temporarily.
 
 It should be working again!
