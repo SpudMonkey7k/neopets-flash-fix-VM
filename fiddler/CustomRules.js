@@ -164,6 +164,10 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.flash_mall")
 	var m_flashMall: boolean = false;
 
+    public static RulesOption("Disable Inventory Stacking", "Ad&vanced")
+    BindPref("fiddlerscript.rules.adv.dont_stack_inv")
+    var m_DisableInvStacking: boolean = false;
+
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
 	public static ToolsAction("Reset Script")
@@ -187,6 +191,9 @@ class Handlers
 	static var saved_score_result;
 
 	static function OnBeforeRequest(oSession: Session) {
+		if (m_DisableInvStacking && oSession.uriContains("ajax/inventory.php")) {
+			oSession.PathAndQuery = oSession.PathAndQuery.replace('Stack=1', 'Stack=0');
+		}
 		// Sample Rule: Color ASPX requests in RED
 		// if (oSession.uriContains(".aspx")) {	oSession["ui-color"] = "red";	}
 
@@ -405,6 +412,9 @@ class Handlers
 					if (path.Contains(".xml")) {
 						oSession.oResponse.headers["Content-Type"] = "text/xml";
 					}
+					if (path.Contains(".html")) {
+						oSession.oResponse.headers["Content-Type"] = "text/html";
+					}
 				}
 
 			}
@@ -536,6 +546,14 @@ class Handlers
 					const fixCode = "</form><form action=\"/process_editpage.phtml\" method=\"post\"><input type='hidden' name='pet_name' value='" + petName + "' />";
 					oSession.utilReplaceInResponse("<input type='submit' name='subbyreset'", fixCode + "<input type='submit' name='subbyreset'");
 				}
+			}
+			// Disable Inventory Stacking
+			if (m_DisableInvStacking && oSession.uriContains('/inventory.phtml')) {
+				oSession.utilReplaceInResponse(
+					'<a href="/inventory.phtml"><div class="inv-popup-exit',
+					'<a><div onclick="$(\'#navpopupshade__2020\').hide(); $(\'#invResult\').hide(); $(\'#refresh-shade__2020\').detach(); $(\'#refreshshade__2020\').detach();" class="inv-popup-exit'
+					//'<a><div onclick="togglePopup__2020(invResult)" class="inv-popup-exit'
+				);
 			}
 			// Automatically upload translation:
 			if (!m_UseTranslationMirror && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
