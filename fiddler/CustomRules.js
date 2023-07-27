@@ -674,6 +674,19 @@ class Handlers
 								oSession.utilSetResponseBody(respBody.replace('function addFields(formObj){}', replacementStr));
 							}
 							oSession["ui-backcolor"] = "lime";
+						} else if (respBody.Length < 30000 && respBody.Contains('<!DOCTYPE html> <html lang="en">')) {
+							// New stackpath
+							// Add the 'addFields' function in stackpath to actually add the form data (and update the Referer):
+							var addFieldsFnStr = "function addFields(formObj){const fTarget = 'FORM_ACTION'; const postData = 'FORM_DATA';const previousPage = 'PREV_PAGE';const fields = postData.split('&');for (const field of fields) {const parts = field.split('=');const newMem = document.createElement('input');newMem.type = 'hidden';newMem.name = unescape(parts[0]);newMem.value = unescape(parts[1]);formObj.appendChild(newMem);}window.history.replaceState(null, '', previousPage);formObj.action=fTarget;}";
+							var data = oSession.GetRequestBodyAsString();
+							var prev = oSession.oRequest.headers['Referer'];
+							addFieldsFnStr = addFieldsFnStr.replace('FORM_ACTION', oSession.fullUrl);
+							addFieldsFnStr = addFieldsFnStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
+							addFieldsFnStr = addFieldsFnStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
+							respBody = respBody.Replace('oEnvlp.appendChild(oFrm);', 'addFields(oFrm);oEnvlp.appendChild(oFrm);');
+							oSession.utilSetResponseBody(respBody.replace('function redirect', addFieldsFnStr + ' function redirect'));
+
+							oSession["ui-backcolor"] = "#ddddff";
 						}
 					}
 				}
