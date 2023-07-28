@@ -164,9 +164,9 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.flash_mall")
 	var m_flashMall: boolean = false;
 
-    public static RulesOption("Disable Inventory Stacking", "Ad&vanced")
-    BindPref("fiddlerscript.rules.adv.dont_stack_inv")
-    var m_DisableInvStacking: boolean = false;
+    public static RulesOption("Enable Better Inventory", "Ad&vanced")
+    BindPref("fiddlerscript.rules.adv.better_inventory")
+    var m_BetterInventory: boolean = false;
 
 	// Force a manual reload of the script file.  Resets all
 	// RulesOption variables to their defaults.
@@ -191,9 +191,6 @@ class Handlers
 	static var saved_score_result;
 
 	static function OnBeforeRequest(oSession: Session) {
-		if (m_DisableInvStacking && oSession.uriContains("ajax/inventory.php")) {
-			oSession.PathAndQuery = oSession.PathAndQuery.replace('Stack=1', 'Stack=0');
-		}
 		// Sample Rule: Color ASPX requests in RED
 		// if (oSession.uriContains(".aspx")) {	oSession["ui-color"] = "red";	}
 
@@ -314,6 +311,18 @@ class Handlers
 		if (oSession.host.Contains("neopets.com") && oSession.HTTPMethodIs("CONNECT") == false) {
 			oSession["x-OverrideSslProtocols"] = " ssl3;tls1.0;tls1.1;tls1.2";
 
+			if (m_BetterInventory) {
+				if (oSession.uriContains("ajax/inventory.php")) {
+					oSession.PathAndQuery = oSession.PathAndQuery.replace('Stack=1', 'Stack=0');
+				}
+			}
+			if ((oSession.PathAndQuery.Contains('/userlookup.phtml?user=') || oSession.PathAndQuery.Contains('/userlookup.phtml?randomfriend=')) && !oSession.PathAndQuery.Contains('place=')) {
+				oSession.PathAndQuery = oSession.PathAndQuery + '&place=99999';
+			}
+			if (oSession.PathAndQuery.Contains('/randomfriend.phtml?randomfriend=') || oSession.PathAndQuery.Contains('/randomfriend.phtml?user=')) {
+				const randomfriendRegex = /randomfriend\.phtml\?(randomfriend|user)=([^&]*)$/;
+				oSession.PathAndQuery = oSession.PathAndQuery.replace(randomfriendRegex, 'userlookup.phtml?place=99999&user=$2');
+			}
 			if (m_flashMall && oSession.PathAndQuery.Contains("/mall/pet_preview_h5.phtml")) {
 				oSession.PathAndQuery = oSession.PathAndQuery.Replace('pet_preview_h5.phtml', 'pet_preview.phtml');
 			}
@@ -547,13 +556,36 @@ class Handlers
 					oSession.utilReplaceInResponse("<input type='submit' name='subbyreset'", fixCode + "<input type='submit' name='subbyreset'");
 				}
 			}
-			// Disable Inventory Stacking
-			if (m_DisableInvStacking && oSession.uriContains('/inventory.phtml')) {
-				oSession.utilReplaceInResponse(
-					'<a href="/inventory.phtml"><div class="inv-popup-exit',
-					'<a><div onclick="$(\'#navpopupshade__2020\').hide(); $(\'#invResult\').hide(); $(\'#refresh-shade__2020\').detach(); $(\'#refreshshade__2020\').detach();" class="inv-popup-exit'
-					//'<a><div onclick="togglePopup__2020(invResult)" class="inv-popup-exit'
-				);
+			// Better Inventory Mods
+			if (m_BetterInventory) {
+				// Remove GBC / openables after opening: (ones that don't require confirmation on open)
+				if (oSession.uriContains('process_cash_object.phtml')) {
+					if (oSession.PathAndQuery.Contains('?cash_obj_id')) {
+						var objId = 0;
+						const params = oSession.PathAndQuery.Split('?')[1].Split('&');
+						for (var i = 0; i< params.length; i++) {
+							const p = params[i].Split('=');
+							if (p[0] === 'cash_obj_id') objId = p[1];
+						}
+						if (objId) {
+							oSession.utilDecodeResponse();
+							oSession.utilReplaceInResponse("<div class='gashapon_display' align='center'>", '<script type="text/javascript">removeItem(' + objId + ');</script><div class="gashapon_display" align="center">');
+						}
+					}
+				}
+				// Remove most NC + NP items on open:
+				if (oSession.uriContains('js/inventory.js')) {
+					oSession.utilDecodeResponse();
+					oSession.utilReplaceInResponse('// Display Results', '// Display Results\n\t\t\tif ((typeof cashData === "object" && cashData.action !== "gashapon") || (typeof postData === "object" && postData.action !== "auction") || typeof auctionData === "object" || (typeof gashaponData === "object" && gashaponData.confirm)) removeItem(currentItemId);');
+					oSession.utilReplaceInResponse('function invView2(itemId) {', 'let currentItemId = null;\n\nfunction removeItem(itemId) {\n\t$(`div.grid-item > div[id="${itemId}"]`).parent().remove();\n}\nfunction invView2(itemId) {\ncurrentItemId = itemId;');
+				}
+				// Prevent the forced-reload after using an item:
+				if (oSession.uriContains('/inventory.phtml')) {
+					oSession.utilReplaceInResponse(
+						'<a href="/inventory.phtml"><div class="inv-popup-exit',
+						'<a><div onclick="$(\'#navpopupshade__2020\').hide(); $(\'#invResult\').hide(); $(\'#refresh-shade__2020\').detach(); $(\'#refreshshade__2020\').detach();" class="inv-popup-exit'
+					);
+				}
 			}
 			// Automatically upload translation:
 			if (!m_UseTranslationMirror && m_UploadTranslations && oSession.uriContains('transcontent/gettranslationxml.phtml')) {
