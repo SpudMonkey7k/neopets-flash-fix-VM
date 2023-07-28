@@ -601,7 +601,7 @@ class Handlers
 				// Remove most NC + NP items on open:
 				if (oSession.uriContains('js/inventory.js')) {
 					oSession.utilDecodeResponse();
-					oSession.utilReplaceInResponse('// Display Results', '// Display Results\n\t\t\tif ((typeof cashData === "object" && cashData.action !== "gashapon") || (typeof postData === "object" && postData.action !== "auction") || typeof auctionData === "object" || (typeof gashaponData === "object" && gashaponData.confirm)) removeItem(currentItemId);');
+                	oSession.utilReplaceInResponse('// Display Results', '// Display Results\n\t\t\tif ((typeof cashData === "object" && cashData.action !== "gashapon") || (typeof postData === "object" && postData.action !== "auction") || typeof auctionData === "object" || (typeof gashaponData === "object" && gashaponData.confirm) || (typeof fortuneData === "object" && fortuneData.action === "confirm")) removeItem(currentItemId);');
 					oSession.utilReplaceInResponse('function invView2(itemId) {', 'let currentItemId = null;\n\nfunction removeItem(itemId) {\n\t$(`div.grid-item > div[id="${itemId}"]`).parent().remove();\n}\nfunction invView2(itemId) {\ncurrentItemId = itemId;');
 					var body = oSession.GetResponseBodyAsString();
 
