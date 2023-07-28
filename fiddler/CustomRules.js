@@ -571,6 +571,31 @@ class Handlers
 							oSession.utilDecodeResponse();
 							oSession.utilReplaceInResponse("<div class='gashapon_display' align='center'>", '<script type="text/javascript">removeItem(' + objId + ');</script><div class="gashapon_display" align="center">');
 						}
+					} else {
+						// Check for item gifts:
+						var formData = oSession.GetRequestBodyAsString();
+						if (formData.length) {
+							const params2 = formData.Split('&');
+							var removeItems = false;
+							var giftBoxId = 0;
+							var giftId = 0;
+							for (var i = 0; i < params2.length; i++) {
+								const p2 = params2[i].Split('=');
+								if (p2[0] === 'sentPass') {
+									removeItems = true;
+								} else if (p2[0] === 'cash_obj_id') {
+									giftBoxId = p2[1];
+								} else if (p2[0].Contains('giftItem')) {
+									giftId = p2[1];
+								}
+							}
+							if (removeItems) {
+								oSession.utilDecodeResponse();
+								const newContent = '<script type="text/javascript">removeItem(' + giftBoxId + '); removeItem(' + giftId + ');</script>';
+								const match = 'Congratulations!';
+								oSession.utilReplaceOnceInResponse(match, newContent + match, true);
+							}
+						}
 					}
 				}
 				// Remove most NC + NP items on open:
