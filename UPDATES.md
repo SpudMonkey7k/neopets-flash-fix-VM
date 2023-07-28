@@ -1,9 +1,17 @@
-## 2023-07-27 - Disable Inventory Stacking/Collapsing!
+## 2023-07-28 - Inventory Improvements!
+Once again TNT fixes something at the same time I do, haha.
+
+Anyway, with Rules->Advanced->Enable Inventory Mods, the follow tweaks are enabled:
+
+1. Using an item / X'ing out of the use-item interface no longer forces a reload.
+2. Using an item should remove the item from your inventory. You don't have to guess what's been used!
+
+(Reloading is still necessary to see new items)
+
+### 2023-07-27 - Disable Inventory Stacking/Collapsing! (Obsolete)
 Yay! Now you can use the inventory similar to the old days. I'm still working on a better fix, but this should be nice!
 
-```
-Rules->Advanced->Disable Inventory Stacking
-```
+~~Rules->Advanced->Disable Inventory Stacking~~
 
 This makes each duplicate item appear in it's own slot, and removes the force-refresh as long as you click the X after you use an item!.
 
