@@ -1,3 +1,14 @@
+## 2023-07-28 - Mac Improvements
+I have done a lot of work to bring Mac closer to parity with Windows.
+
+There is an option near the top of neopets.py that you can edit, `enable_flash_mall` so you can toggle that to disabled
+if you don't wish to use the Flash version of the NC Mall. (Only the Flash version can award the Goggles avatar)
+
+Did you know? The Goggles avatar counts as a +1 on the high scores (but not your userlookup)...  as long as you don't 
+also have the 2018 Comic Con avatar for some reason...
+
+Also www.neopets.com/fixscore now works on mac! Needs testing, if you have issues just let me know! .cyr on Discord 
+
 ## 2023-07-28 - Inventory Improvements!
 Once again TNT fixes something at the same time I do, haha.
 

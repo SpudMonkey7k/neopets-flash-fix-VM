@@ -22,6 +22,8 @@ To stop the proxy, with the terminal active, press [Ctrl]+C
 
 You will need the proxy running whenever you want the play the games / use the neofixes, so maybe make a shortcut for step 5.
 
+Note: There is now a "User Settings" section of the neopets.py configuration file to toggle settings.
+
 ## Install Pale Moon (Web Browser)
 1. Download the appropriate version here: https://www.palemoon.org/download.shtml
 2. Install the software

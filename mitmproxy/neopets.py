@@ -11,6 +11,10 @@ saved_cookies: Optional[Headers] = None
 saved_score_url: Optional[str] = None
 saved_score_result: Optional[str] = None
 
+# User settings: Only change these values:
+enable_flash_mall: bool = true # Change to false to go back to the html5 mall preview.
+#End User settings, leave everything else alone!
+
 FILES_DIR = str(Path(__file__).parent)
 
 
@@ -141,3 +145,7 @@ def response(flow: http.HTTPFlow) -> None:
                 # This means the score reached neopets, but may have been rejected for another reason
                 saved_score_url = None
                 saved_score_result = flow.response.content
+
+        # Enable flash preview for Goggles avatar. Relies on the neopets overrides folder also.
+        if enable_flash_mall and "/mall/pet_preview_h5.phtml" in url:
+            flow.response.content = flow.response.content.replace('pet_preview_h5.phtml', 'pet_preview.phtml')
