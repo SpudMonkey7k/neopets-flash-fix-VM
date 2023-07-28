@@ -603,6 +603,13 @@ class Handlers
 					oSession.utilDecodeResponse();
 					oSession.utilReplaceInResponse('// Display Results', '// Display Results\n\t\t\tif ((typeof cashData === "object" && cashData.action !== "gashapon") || (typeof postData === "object" && postData.action !== "auction") || typeof auctionData === "object" || (typeof gashaponData === "object" && gashaponData.confirm)) removeItem(currentItemId);');
 					oSession.utilReplaceInResponse('function invView2(itemId) {', 'let currentItemId = null;\n\nfunction removeItem(itemId) {\n\t$(`div.grid-item > div[id="${itemId}"]`).parent().remove();\n}\nfunction invView2(itemId) {\ncurrentItemId = itemId;');
+					var body = oSession.GetResponseBodyAsString();
+
+					var cursor = body.indexOf('function useInvItem');
+					var partial = [body.substr(cursor)];
+					partial.push(partial[0].substr(partial[0].indexOf('useobject.phtml')));
+					const replace = partial[1].replace('success: function(response) {', 'success: function(response) {\n\t\t\t\tif ((typeof postData === "object" && postData.action !== "auction") || typeof auctionData === "object") removeItem(currentItemId);');
+					oSession.utilReplaceInResponse(partial[1], replace);
 				}
 				// Prevent the forced-reload after using an item:
 				if (oSession.uriContains('/inventory.phtml')) {
