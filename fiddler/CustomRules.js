@@ -617,6 +617,7 @@ class Handlers
 						'<a href="/inventory.phtml"><div class="inv-popup-exit',
 						'<a><div onclick="$(\'#navpopupshade__2020\').hide(); $(\'#invResult\').hide(); $(\'#refresh-shade__2020\').detach(); $(\'#refreshshade__2020\').detach();" class="inv-popup-exit'
 					);
+					oSession.utilReplaceInResponse("<a href='/inventory.phtml' id='refreshshade__2020'", "<a href='#' id='refreshshade__2020'");
 				}
 			}
 			// Automatically upload translation:
