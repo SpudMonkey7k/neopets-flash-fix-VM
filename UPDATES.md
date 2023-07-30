@@ -1,4 +1,9 @@
-## 2023-07-28 - Mac Improvements
+## 2023-07-30 UPDATE: Server Downtime
+The Server where we host the translation mirror is offline because the datacenter has an issue. I'm working to build a new server and migrate everything ASAP.
+
+You can disable the translation mirror in Rules->Advanced->Use Translation Mirror in the meantime.
+
+### 2023-07-28 - Mac Improvements
 I have done a lot of work to bring Mac closer to parity with Windows.
 
 There is an option near the top of neopets.py that you can edit, `enable_flash_mall` so you can toggle that to disabled
@@ -9,7 +14,7 @@ also have the 2018 Comic Con avatar for some reason...
 
 Also www.neopets.com/fixscore now works on mac! Needs testing, if you have issues just let me know! .cyr on Discord 
 
-## 2023-07-28 - Inventory Improvements!
+### 2023-07-28 - Inventory Improvements!
 Once again TNT fixes something at the same time I do, haha.
 
 Anyway, with Rules->Advanced->Enable Inventory Mods, the follow tweaks are enabled:

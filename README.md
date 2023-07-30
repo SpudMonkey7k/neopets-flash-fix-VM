@@ -1,5 +1,10 @@
 # Play Flash, Shockwave, and 3dvia Neopets games on Windows 10 and Windows 11! Works in 2022 / 2023
 
+## 2023-07-30 UPDATE: Server Downtime
+The Server where we host the translation mirror is offline because the datacenter has an issue. I'm working to build a new server and migrate everything ASAP.
+
+You can disable the translation mirror in Rules->Advanced->Use Translation Mirror in the meantime.
+
 ## [Mac Instructions](README_MAC.md) (experimental)
 
 ### Important: We are now logging important updates [here](UPDATES.md).
