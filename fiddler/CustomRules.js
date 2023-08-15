@@ -236,6 +236,9 @@ class Handlers
 			oSession.responseCode = '204';
 			oSession["ui-backcolor"] = "Lavender";
 		}
+		if (oSession.host.Contains('swf.neopets.com') && oSession.HTTPMethodIs("CONNECT") == false) {
+			oSession.host = "images.neopets.com";
+		}
 		// Don't be tracked by Visual Studio. Also speeds the site up a lot.
 		if (m_skipVSTracking && oSession.uriContains('dc.services.visualstudio.com/v2/track')) {
 			oSession.utilCreateResponseAndBypassServer();
@@ -739,6 +742,7 @@ class Handlers
 							var prev = oSession.oRequest.headers['Referer'];
 							replStr = replStr.replace('FORM_DATA', data.replace(/\+/g, ' '));
 							replStr = replStr.replace('PREV_PAGE', prev.replace(/http:/, 'https:'));
+							replStr = replStr.replace('submitFrm.action="";', 'submitFrm.action="' + oSession.PathAndQuery + '";');
 							oSession.utilSetResponseBody(respBody.Replace('submitFrm.sbbSbmt();', replStr + 'submitFrm.sbbSbmt();'));
 							oSession['ui-backcolor'] = "magenta";
 
