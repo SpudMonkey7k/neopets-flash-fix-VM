@@ -156,7 +156,7 @@ class Handlers
 	BindPref("fiddlerscript.rules.adv.tx_no_expire")
 	var m_ShopTransactionsNeverExpire: boolean = false;
 
-	public static RulesOption("Use Old Skarl (Enables Charm!)", "Ad&vanced")
+	public static RulesOption("Use Old Skarl", "Ad&vanced")
 	BindPref("fiddlerscript.rules.adv.old_skarl")
 	var m_UseOldSkarl: boolean = true;
 
