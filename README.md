@@ -40,7 +40,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 **Fidler Instructions:**
 1. Install [Fiddler Classic](https://www.telerik.com/download/fiddler) (**NOT** "Fiddler Everywhere") There is no email confirmation, so just put in a fake email.
-2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules (erase everything in there first), and hit Ctrl+S to save. You should hear a slight ding.
+2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](https://github.com/themrrobert/neopets-flash-fix-windows-10/blob/main/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules (erase everything in there first), and hit Ctrl+S to save. You should hear a slight ding.
 3. In Fiddler go to Tools -> Options -> HTTPS.
 > **Enable:**
 > - Capture HTTPS CONNECTs
