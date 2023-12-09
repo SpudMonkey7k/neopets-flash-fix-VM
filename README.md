@@ -84,7 +84,7 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 2. Download and run the [Shockwave installer](http://filehippo.com/en/download_shockwave/1220/) 
 3. Start Internet Explorer and try to play a Shockwave wave like [Hannah and the Pirate caves](https://www.neopets.com/games/game.phtml?game_id=473)!
 4. See notes below, and Troubleshooting farther  below for resolutions to common issues.
-5. **Recommended:** Before you click the "Play" button to load the game, verify: Rules->Shockwave Tweaks->Enabled. I spent countless hours refining this selection of tweaks to get the best results out of each Shockwave game :)
+5. **Recommended:** Before you click the "Play" button to load the game, verify: Rules->Shockwave Tweaks->Enabled. themrrobert spent countless hours refining this selection of tweaks to get the best results out of each Shockwave game :)
 
 **Bad Driver Bug**
 - See full details here: https://gaming.stackexchange.com/questions/339173/how-can-i-play-dcr-shockwave-games?newreg=534f64e9e2ad4f698d7c1607667a48df
@@ -141,6 +141,6 @@ You might get this error, just ignore it (it's from not having a blank line afte
 
 # References / Thank you's
 
-1. Thank you to [juvian](https://github.com/juvian/neopets-flash-fix) for the original version of this guide, got me a good deal of the way there, and I was only able to make this based off their amazing work with Fiddler.
-2. Thank you to andkon.com: their amazing [FAQ](http://andkon.com/arcade/faq.php) is the first resource I found, which got me going early.
+1. Thank you to [juvian](https://github.com/juvian/neopets-flash-fix) for the original version of this guide, got themrrobert a good deal of the way there, and themrrobert was only able to make this based off their amazing work with Fiddler.
+2. Thank you to andkon.com: their amazing [FAQ](http://andkon.com/arcade/faq.php) is the first resource themrrobert found, which got him going early.
 3. [andkon.com](http://andkon.com/arcade/faq.php) also has a "SECURITY CONSCIOUS WALKTHROUGH" on the linked page, which proves the authenticity and source of all provided binaries. (The linked binaries herein come from archive.org's adobe mirror)
