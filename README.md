@@ -75,9 +75,8 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 
 **Flash Games:**
 0. Remove any existing installed Adobe Flash installations. *If using clean OS install, skip this step. If running less than Windows 10, restart after each removal/installation.*
-1. Install Flash version 32.0.0.371
-3. Disable Auto Update for Pale Moon
-4. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
+1. Install [Flash version 32.0.0.363](https://static.centbrowser.com/FlashPlayerStandalone/ppapi_32.0.0.363.exe)
+2. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
 
 **Shockwave Games:**
 0. Important! If you are using an nVidia graphics card, you need to follow the 'Bad Driver Bug' direction
