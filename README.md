@@ -71,7 +71,11 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 > localhost;127.0.0.1
 7. Click Content tab and then chick on Certificates
 8. Click Import and select the certificate saved from Fiddler named "FiddlerRoot.cer"
-9. Close out of Internet Explorer 
+9. Head to https://neopets.com/games/classic.phtml to login
+10. Once logged in, open IE menu and click on Compatibility View settings
+11. Add "neopets.com" to the list
+> NOTE: you will have to remove "neopets.com" from the list every time you login as having compatibility view enabled breaks the new login page. Then add it again once logged in.
+12. Close out of Internet Explorer 
 
 **Flash Games:**
 0. Remove any existing installed Adobe Flash installations. *If using clean OS install, skip this step. If running less than Windows 10, restart after each removal/installation.*
