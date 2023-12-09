@@ -1,17 +1,19 @@
-# Play Flash, Shockwave, and 3dvia Neopets games on Windows 10 and Windows 11! Works in 2022 / 2023
+Thanks to themrrobert and juvian for initial process.
 
-## [Mac Instructions](README_MAC.md) (experimental)
+# Play Flash, Shockwave Neopets games! Works in 2023
+> 3Dvia currently does not work as there is no standalone installer.
 
-### Important: We are now logging important updates [here](UPDATES.md).
-Please check it out as the information there is very important.
+### BIOS Settings
+This guide uses Virtual Machines, make sure your bios has virtualization settings enabled. 
+(Intel VT-x or AMD-V)
 
-Video version of the guide (Thanks Halondrus!): [https://www.youtube.com/watch?v=1fYXmqy-h6o&pp=ygUYbmVvcGV0cyBmbGFzaCBndWlkZSAyMDIz](https://www.youtube.com/watch?v=1fYXmqy-h6o&pp=ygUYbmVvcGV0cyBmbGFzaCBndWlkZSAyMDIz)
+NOTE: if you are running a Windows 8.1 machine or a Windows 10 machine update 21H2 or older, you can do this directly from your machine, no need for a VM. 
 
 ## Important: Do not give your Fiddler session data to ANYONE.
 This contains your login cookies! If you do seek help from anyone, including myself, always logout which will invalidate your session cookie, and then log back in, to ensure that noone can use your cookies to login.
 
 ### Preface:
-This guide is confirmed to work on Windows 10 and 11. The steps SHOULD work on Windows 7/8, also, but some things might be different, like installation paths.
+This guide is confirmed to work on Windows 8.1 and 10 1607. It should work on any build of Windows 10 build 21H2 and older. Should also work on windows 7, but untested.
 
 This guide is overly detailed to make it approachable, so  don't be put off by all the steps. It should be as easy to follow as possible. Some computer knowledge will definitely help.
 
@@ -29,7 +31,14 @@ Fiddler, as configured, will act as a Man-in-the-middle (which is a good thing i
 
 This is absolutely required in order to play nearly all Flash/Shockwave/3dvia games, and is the most complicated part of the installation, but if you follow the steps as described, you will be okay! I will try to respond to Issues submitted to this repository for the short term, and update the guide accordingly.
 
-**Installation Instructions:**
+**Initial Setup**
+1. Install [vmware workstation](https://www.vmware.com/products/workstation-player.html).
+2. Download Windows 8.1 ISO from [Microsoft](https://www.microsoft.com/en-us/software-download/windows8ISO).
+> You will have to provide your own Windows 10 ISO 21H2 or older as Microsoft no longer provides ISO of older versions of Win10.
+3. Run vmware and create a new vm using the Win 8.1 ISO, vmware should detect it as a Win8.1 ISO and automatically select the proper settings.
+4. boot up the vm.
+
+**Fidler Instructions:**
 1. Install [Fiddler Classic](https://www.telerik.com/download/fiddler) (**NOT** "Fiddler Everywhere") There is no email confirmation, so just put in a fake email.
 2. Find fiddler script folder (usually Documents\Fiddler2\Scripts) and save [CustomRules.js](/fiddler/CustomRules.js) to that directory. Alternatively, you can copy/paste the file contents into Fiddler->Rules->Customize rules (erase everything in there first), and hit Ctrl+S to save. You should hear a slight ding.
 3. In Fiddler go to Tools -> Options -> HTTPS.
@@ -37,56 +46,46 @@ This is absolutely required in order to play nearly all Flash/Shockwave/3dvia ga
 > - Capture HTTPS CONNECTs
 > - Decrypt HTTPS Traffic
 > - Ignore Server Certificate Errors.
-> 4. Click Actions->Export Root Certificate to Desktop (This is to make Pale Moon trust the localhost and not give you constant certificate errors)
+> 4. Click Actions->Export Root Certificate to Desktop (This is to make Internet Explorer trust the localhost and not give you constant certificate errors)
 > 5. Click Actions->Trust Root Certificate. This will make other browsers (like Chrome), and Windows apps such as Discord, also trust the proxy (Fiddler). *This isn't strictly necessary, but if it's not done, you won't be able to use Chrome/Discord/Etc while Fiddler is running and intercepting traffic.*
-6. To install this certificate into Pale Moon, Open Pale Moon, and click the button/toolbar that says, "Pale Moon" at the top left of the browser (menu bar), and click Preferences. Then go to the "Advanced" tab, and then choose the "Certificates" sub-tab. Click "View Certificates" then click "Import" and locate the exported certificate on your desktop. It is named "FiddlerRoot.cer"
-7. **Important:** Add exclusions to your proxy: In Fiddler, go to Tools->Options->Connections, and add the following into the "Bypass URLs that begin with..." field:
+6. **Important:** Add exclusions to your proxy: In Fiddler, go to Tools->Options->Connections, and add the following into the "Bypass URLs that begin with..." field:
 > <-loopback>;discord.com; discordapp.com; netflix.com; *.discord.com; *.discordapp.com; *.netflix.com; *.discordapp.net; discordapp.net; *.google.com; google.com; *.gmail.com; gmail.com; *.youtube.com; *.gstatic.com; *.cloudflare.com; *.googleapis.com; *.jquery.com; *.googlevideo.com; support.neopets.com
-8. Download the [neopets folder in this project](https://download-directory.github.io/?url=https://github.com/themrrobert/neopets-flash-fix-windows-10/tree/main/neopets)
-9. Find fiddler installation path (usually C:\Users\YOUR_USERNAME\AppData\Local\Programs\Fiddler or C:\Program Files\Fiddler), create a folder named "neopets" and extract the downloaded neopets.zip files into it. The extracted files should end up looking like C:\Users\YOUR_USERNAME\AppData\Local\Programs\Fiddler\neopets\games\...
-10. Close Fiddler.
-11. Start Fiddler whenever you want to play Neopets games :)
+7. Download the [neopets folder in this project](https://download-directory.github.io/?url=https://github.com/themrrobert/neopets-flash-fix-windows-10/tree/main/neopets)
+8. Find fiddler installation path (usually C:\Users\YOUR_USERNAME\AppData\Local\Programs\Fiddler or C:\Program Files\Fiddler), create a folder named "neopets" and extract the downloaded neopets.zip files into it. The extracted files should end up looking like C:\Users\YOUR_USERNAME\AppData\Local\Programs\Fiddler\neopets\games\...
+9. Close Fiddler.
+10. Start Fiddler whenever you want to play Neopets games :)
 
 > **Notes:**  
 > #5. You can remove this certificate later via Windows Certificate Manager (certmgr.msc->Trusted Root Certification Authorities->Certificates). The name of the certificate is DO_NOT_TRUST so that you're well aware it's a local certificate, and not from a trusted Certificate Authority (CA). It is safe to trust this certificate, BUT the implications are that you will not see any genuine certificate errors from websites, so you should keep Fiddler closed when you're not using it, and you should remove the certificate if you stop playing Neopets games.
 >
 > Fiddler seems to need "Capture Traffic" enabled in order to work consistently (feel free to experiment). This means it logs every packet that is proxied throuogh it. So while you can watch Youtube on Chrome while running Fiddler, you should clear out the history/restart Fiddler once in a while, otherwise it will start using up all your memory holding a copy of every video packet!
 
+**Setting up Internet Explorer**
+1. Open Internet Explorer
+2. Open Internet Options
+3. Click Security tab and uncheck "Enable Protected Mode"
+4. Click on Connections Tab then LAN Settings then Advanced
+5. Fill both HTTP and Secure field with
+> localhost:8080
+6. Under exceptions add
+> localhost;127.0.0.1
+7. Click Content tab and then chick on Certificates
+8. Click Import and select the certificate saved from Fiddler named "FiddlerRoot.cer"
+9. Close out of Internet Explorer 
 
-### Flash Games: (64-bit Pale Moon)
-0. Remove any existing installed Adobe Flash installations. *If running less than Windows 10, restart after each removal/installation.*
-1. Browser: Install [Pale Moon 64-bit latest](https://www.palemoon.org/download.php?mirror=us&bits=64&type=installer) (31.4.2 at time of writing, so use that version if you have issues)
-2. Install Flash version 32.0.0.371 [Download Flash Installer](https://web.archive.org/web/2020*/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe) from Archive.org's Adobe Mirror | [Alternate Link](https://web.archive.org/web/20200523210841/http://fpdownload.adobe.com/get/flashplayer/pdc/32.0.0.371/install_flash_player.exe)
+**Flash Games:**
+0. Remove any existing installed Adobe Flash installations. *If using clean OS install, skip this step. If running less than Windows 10, restart after each removal/installation.*
+1. Install Flash version 32.0.0.371
 3. Disable Auto Update for Pale Moon
 4. That's it! As long as Fiddler is installed and running as directed, you should be able to play nearly all of the [Flash games](https://www.neopets.com/games/category.phtml?sortby=pop)!
 
-*Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
-
-### 3dvia games (32-bit Pale Moon)
-1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
-2. Disable Auto Update for Pale Moon
-3. Ensure Fiddler is configured and running, and then try to play a 3dvia game, like Shenku River Rush (just River Rush in the game list)
-4. This should automatically launch the installer the first time
-5. Enjoy!
-
-> **Notes:**  
-> *Make sure you have installed the FiddlerRoot.cer certificate as explained in Fiddler->Notes #4*
->
-> You can install both 64-bit and 32-bit versions at the same time, but the one you install second will overwrite the shortcut, so you should create a new shortcut to the first installation.
->
-> When you want to switch game-platforms, just close Pale Moon, and start the other version.
-
-### Shockwave Games: (32-bit Pale Moon)
-0. Important! You need to follow the 'Bad Driver Bug' direction
-1. Browser: Install Pale Moon 32-bit, version 28, if not already installed. [Download](https://archive.palemoon.org/palemoon/28.x/28.17.0/palemoon-28.17.0.win32.installer.exe)
-2. Disable Auto Update for Pale Moon
-3. Ensure all previous Shockwave installations are removed, and Pale Moon is closed.
-4. Ensure Pale Moon is closed, and then run the Shockwave installer. [Download Shockwave 10.1.3.018 from Archive.org](https://archive.org/download/ShockwaveInstallers/Shockwave_Installers/Shockwave_Installer_Full_10.1.3.018.exe)
-5. **Important!** Before starting Pale Moon again, you must copy "C:\Program Files (x86)\Pale Moon\plugins\"
-   From "C:\Program Files (x86)\Pale Moon\", copy the "plugins" folder and paste it into your "%appdata%\Moonchild Productions\Pale Moon\Profiles\RANDOM_NAME.default\" directory. RANDOM_NAME will be different for you, but you can put "%appdata%\Moonchild Productions\Pale Moon\Profiles\" into the Run box (without quotes) and it should open up the directory containing your profile folder. 
-6. Start Pale Moon (32-bit version) and try to play a Shockwave wave like Hannah and the Pirate caves!
-7. See notes below, and Troubleshooting farther  below for resolutions to common issues.
-8. **Recommended:** Before you click the "Play" button to load the game, verify: Rules->Shockwave Tweaks->Enabled. I spent countless hours refining this selection of tweaks to get the best results out of each Shockwave game :)
+**Shockwave Games:**
+0. Important! If you are using an nVidia graphics card, you need to follow the 'Bad Driver Bug' direction
+1. Ensure all previous Shockwave installations are removed, and Internet Explorer is closed. *If using clean OS install, skip this step. If running less than Windows 10, restart after each removal/installation.*
+2. Download and run the [Shockwave installer](http://filehippo.com/en/download_shockwave/1220/) 
+3. Start Internet Explorer and try to play a Shockwave wave like [Hannah and the Pirate caves](https://www.neopets.com/games/game.phtml?game_id=473)!
+4. See notes below, and Troubleshooting farther  below for resolutions to common issues.
+5. **Recommended:** Before you click the "Play" button to load the game, verify: Rules->Shockwave Tweaks->Enabled. I spent countless hours refining this selection of tweaks to get the best results out of each Shockwave game :)
 
 **Bad Driver Bug**
 - See full details here: https://gaming.stackexchange.com/questions/339173/how-can-i-play-dcr-shockwave-games?newreg=534f64e9e2ad4f698d7c1607667a48df
@@ -131,20 +130,15 @@ You might get this error, just ignore it (it's from not having a blank line afte
 2. However, if your score fails to submit, you can visit the virtual URL: https://www.neopets.com/fixscore  which will automatically resubmit the score in the browser, solving Stackpath naturally.
 3. If you see errcode=17 in the score output result (only visible via the fixscore link, or Fiddler logs), this is caused by the "session ID" being invalid. This can happen if you load up the same game twice, or at approximately Midnight NST, all sessions are cleared. (This prevents scores from being submit much later) 
 4. If you don't even SEE a process_xxx_score.phtml packet, and you see a couple oddly-placed zeros instead of the score-submission screen, this seems to be caused by the Flash game being in a bad state. Try next two steps.
-5. In Fiddler, if you go to Rules->Performance->Simulate Modem Speeds, and then reload the game with cache disabled (open Pale Moon's Inspect Element tool inside the game window (try the outside edges outside the game area), click the Settings/Gear icon in the top-right of the Inspect window, and then enable "Disable HTTP Cache (when toolbox is open)", then reload the game with the Inspect window open and Simulate Modem Speeds enabled. This will make the game take a while to load, but it's worth it, because you don't have to reload it constantly and pray that your score will submit when you finally get a good one.
+5. In Fiddler, if you go to Rules->Performance->Simulate Modem Speeds, and then reload the game with cache disabled then reload the game with Simulate Modem Speeds enabled. This will make the game take a while to load, but it's worth it, because you don't have to reload it constantly and pray that your score will submit when you finally get a good one.
 6. If the game fails to load and gets stuck at the loading screen, try step #5, or reloading the game a couple times. Restart the browser if all else fails, especially with Shockwave, we're using old versions which can crash and freeze occasionally.
-7. If 3dvia games are the ones not working, go [here](https://3dlifeplayer.dl.3dvia.com/player/install/3DLifePlayer.js) and accept risk if prompted. (It probably means you didn't install/trust the certificate in the Fiddler instructions)
-8. If Hannah and the Ice Caves says, 'Sorry. It appears that this game is not running at its intended location', hold Shift + O + K (in that order) and it should start right up. Make sure you click inside the game window first. (letter O, like OK)
-9. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. Close Pale Moon, and restart it from the 64-bit installation. (You can fix it on 32-bit mode by adding "ProtectedMode=0" to c:\windows\SysWOW64\Macromed\Flash\mms.cfg and restarting the browser.)
-10. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave, or 2. You didn't copy the plugins directory to your user profile.
-11. If the game doesn't fit / runs outside the window, this is usually because you're zoomed out. Reset zoom to 100% and reload the game.
-12. Terror Mountain Tilt: If you can't distinguish the colors of the rings, try switching to OpenGL or another renderer by right-clicking the game and going to Properties, iirc.
-13. If Dice Escape is the only Shockwave game you can't get working, you need to do the "Bad Driver Bug" fix listed above.
+7. If Hannah and the Ice Caves says, 'Sorry. It appears that this game is not running at its intended location', hold Shift + O + K (in that order) and it should start right up. Make sure you click inside the game window first. (letter O, like OK)
+8. If you have issues where the keyboard input isn't working, like in Faerie Bubbles, or Kiko Racing, you are probably running the Flash games in the 32-bit browser. You can fix it on 32-bit mode by adding "ProtectedMode=0" to c:\windows\SysWOW64\Macromed\Flash\mms.cfg and restarting the browser.
+9. If you get the sad Usul saying Shockwave is not installed, either 1. You used your own "slim" installer for shockwave.
+10. If the game doesn't fit / runs outside the window, this is usually because you're zoomed out. Reset zoom to 100% and reload the game.
+11. Terror Mountain Tilt: If you can't distinguish the colors of the rings, try switching to OpenGL or another renderer by right-clicking the game and going to Properties, iirc.
+12. If Dice Escape is the only Shockwave game you can't get working, you need to do the "Bad Driver Bug" fix listed above.
 
-### Pale Moon default installation locations:
-
-1. Pale Moon 64-bit default location: c:\Program Files\Pale Moon\palemoon.exe
-2. Pale Moon 32-bit default location: c:\Program Files (x86)\Pale Moon\palemoon.exe
 
 # References / Thank you's
 
