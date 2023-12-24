@@ -12,7 +12,7 @@ saved_score_url: Optional[str] = None
 saved_score_result: Optional[str] = None
 
 # User settings: Only change these values:
-enable_flash_mall: bool = true # Change to false to go back to the html5 mall preview.
+enable_flash_mall: bool = True # Change to False to go back to the html5 mall preview.
 #End User settings, leave everything else alone!
 
 FILES_DIR = str(Path(__file__).parent)
