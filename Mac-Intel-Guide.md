@@ -1,8 +1,8 @@
 # Mac (Intel) VM Guide
 
 ### Preface:
-[!NOTE]
-This was tested on OSX Catalina; others have followed this guide and it had worked for them!
+> [!NOTE]
+> This was tested on OSX Catalina; others have followed this guide and it had worked for them!
 
 This guide is overly detailed to make it approachable, so  don't be put off by all the steps. It should be as easy to follow as possible. Some computer knowledge will definitely help.
 
